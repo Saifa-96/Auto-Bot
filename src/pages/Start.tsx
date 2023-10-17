@@ -13,11 +13,11 @@ export const Start: FC = () => {
   }, []);
 
   const openProject = useCallback(async () => {
-    const result = await window.screenshot.readAppSettings();
+    const result = await window.configFile.load();
+    console.log('load project: ', result)
     const flowId = JSON.parse(result).flows[0].id;
     set(JSON.parse(result));
     navigate(`/editor/flow/${flowId}`);
-    console.log(result);
   }, []);
 
   return (

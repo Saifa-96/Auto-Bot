@@ -14,7 +14,7 @@ export const FlowSettingsForm: FC = () => {
 
   return (
     <div>
-      <Button mb="3" onClick={() => window.screenshot.turnOnBot(flow.id)}>
+      <Button mb="3" onClick={() => window.bot.turnOn(flow.id)}>
         Execute
       </Button>
       <TextFieldInput readOnly value={flow.name} />

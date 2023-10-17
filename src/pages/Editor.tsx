@@ -3,7 +3,7 @@ import { ReactFlowProvider } from "reactflow";
 import { styled } from "@stitches/react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { HorizonBox, HorizonBoxItem } from "../layouts";
-import { useFlowList, useMonitArea } from "../store";
+import { useFlowList, useMonitRegion } from "../store";
 import {
   Button,
   ScrollArea,
@@ -17,17 +17,19 @@ export const Editor: FC = () => {
   const navigate = useNavigate();
   const flowList = useFlowList();
 
-  const area = useMonitArea();
+  const region = useMonitRegion();
   const onValueChange = useCallback(
     (isShowMonitor: boolean) => {
       if (isShowMonitor) {
-        console.log("monitor area: ", area);
-        window.screenshot.showMonitor(area);
+        console.log("monitor area: ", region);
+        // window.screenshot.showMonitor(area);
+        window.monitor.open(region);
       } else {
-        window.screenshot.hideMonitor();
+        // window.screenshot.hideMonitor();
+        window.monitor.close();
       }
     },
-    [area]
+    [region]
   );
 
   return (

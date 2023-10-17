@@ -1,28 +1,51 @@
-import { dialog } from "electron";
-import fs from "fs";
+import { dialog, app } from "electron";
+import fs from "node:fs";
+import path from "node:path";
 
 class FileManager {
-  private _savePath?: string;
+  private _configFilePath?: string;
 
-  save(contents: string) {
-    const savePath = this._savePath ?? requestSavePath();
+  getConfigFilePath() {
+    return this._configFilePath!;
+  }
+
+  saveConfigFile(contents: string) {
+    const savePath = this._configFilePath ?? requestSavePath();
     if (!savePath) {
       // cancel save
       return;
     }
 
-    this._savePath = savePath;
+    this._configFilePath = savePath;
     return write(savePath, contents);
   }
 
-  load() {
+  loadConfigFile() {
     const loadPath = requestOpenPath();
     if (!loadPath) {
       // cancel load
       return;
     }
-    this._savePath = loadPath;
+    this._configFilePath = loadPath;
     return read(loadPath);
+  }
+
+  saveAsTemporaryFile(data: string | NodeJS.ArrayBufferView, suffix: string) {
+    const tempDir = app.getPath("temp");
+    const fileName = `${(+new Date()).toString()}.${suffix}`;
+    const dir = path.join(tempDir, fileName);
+    fs.writeFileSync(dir, data);
+    return {
+      removeFile: () =>
+        fs.unlink(dir, (err) => {
+          if (err) {
+            console.log("delete error");
+          } else {
+            console.log("deleted temporary file.");
+          }
+        }),
+      dir,
+    };
   }
 }
 

@@ -5,7 +5,7 @@ export const Monitor: FC = () => {
   const [areas, setAreas] = useState<[number, number, number, number][]>([]);
 
   useEffect(() => {
-    const off = window.screenshot.detectedAreas((areas) => {
+    const off = window.monitor.drawMatchedRegion((areas) => {
       setAreas(areas);
     });
 
@@ -33,7 +33,7 @@ export const Monitor: FC = () => {
 };
 
 const AreaBox = styled("div", {
-  border: "1px solid red",
+  border: "2px solid red",
   position: "absolute",
 });
 

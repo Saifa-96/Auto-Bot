@@ -2,10 +2,8 @@ import { BrowserWindow } from "electron";
 import path from "node:path";
 
 export class MonitorWin extends BrowserWindow {
-  private _parent: BrowserWindow;
-
-  constructor(parent: BrowserWindow, area: [number, number, number, number]) {
-    const [x, y, w, h] = area;
+  constructor(area: { x: number; y: number; w: number; h: number }) {
+    const { x, y, w, h } = area;
 
     super({
       title: "Monitor",
@@ -23,21 +21,32 @@ export class MonitorWin extends BrowserWindow {
         preload: path.join(__dirname, "preload.js"),
       },
     });
-
-    this._parent = parent;
-    this.on("resized", this.sendGeometry2Renderer);
-    this.on("moved", this.sendGeometry2Renderer);
   }
 
   getGeometry() {
     const [x, y] = this.getPosition();
     const [w, h] = this.getSize();
-    return [x, y, w, h];
+    return { x, y, w, h };
   }
 
-  sendGeometry2Renderer() {
-    const area = this.getGeometry();
-    const parent = this._parent;
-    parent?.webContents.send("monitor-area", area);
+  ignoreMouse(bool: boolean) {
+    if (bool) {
+      this.setIgnoreMouseEvents(true, {
+        forward: true,
+      });
+    } else {
+      this.setIgnoreMouseEvents(false);
+    }
+  }
+
+  onChangedGeometry(
+    callback: (geometry: { x: number; y: number; w: number; h: number }) => void
+  ) {
+    const fn = () => {
+      const area = this.getGeometry();
+      callback(area);
+    };
+    this.on("resized", fn);
+    this.on("moved", fn);
   }
 }

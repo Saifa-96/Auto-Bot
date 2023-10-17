@@ -13,7 +13,7 @@ export const useFlow = (flowId: string) => {
 
   const flow = useMemo(() => {
     console.log("flow data:", flows);
-    return flows.find((f) => (f.id === flowId));
+    return flows.find((f) => f.id === flowId);
   }, [flows, flowId]);
 
   if (!flow) {
@@ -41,13 +41,8 @@ export const useVersion = () => useStore(versionSelector);
 const monitorSelector = (state: Store) => state.updateMonitor;
 export const useUpdateMonitor = () => useStore(monitorSelector);
 
-const monitorAreaSelector = (
-  state: Store
-): [number, number, number, number] => {
-  const { x, y, w, h } = state.monitor;
-  return [x, y, w, h];
-};
-export const useMonitArea = () => useStore(monitorAreaSelector);
+const monitorAreaSelector = (state: Store) => state.monitor;
+export const useMonitRegion = () => useStore(monitorAreaSelector);
 
 const imagesSelector = (state: Store) => ({
   images: state.images,

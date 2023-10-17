@@ -19,9 +19,9 @@ export const TemplateInput: FC<TemplateInputProps> = (props) => {
 
   const takeScreenshot = useCallback(async () => {
     const imageURL = await window.screenshot.takeScreenshot();
-    addImage(imageURL);
-    onChange({ imageId, threshold });
-  }, []);
+    const { id } = addImage(imageURL);
+    onChange({ imageId: id, threshold });
+  }, [onChange]);
 
   const onValueChange = useCallback<(v: number[]) => void>(
     debounce((v: number[]) => {
@@ -35,7 +35,8 @@ export const TemplateInput: FC<TemplateInputProps> = (props) => {
   }, [onChange]);
 
   const onDetect = useCallback(() => {
-    window.screenshot.detectImage(imageURL!);
+    // window.screenshot.detectImage(imageURL!);
+    window.monitor.matchTemplate(imageURL);
   }, [imageURL]);
 
   if (!imageURL) {
@@ -90,12 +91,15 @@ export const TemplatesInput: FC<TemplatesInputProps> = (props) => {
     [value]
   );
 
-  const onThresholdChange = useCallback((index: number, v: number) => {
-    const newValue = [...value];
-    console.log('threshold changed:',  value, newValue)
-    newValue[index] = { ...value[index], threshold: v };
-    onChange(newValue);
-  }, [value]);
+  const onThresholdChange = useCallback(
+    (index: number, v: number) => {
+      const newValue = [...value];
+      console.log("threshold changed:", value, newValue);
+      newValue[index] = { ...value[index], threshold: v };
+      onChange(newValue);
+    },
+    [value]
+  );
 
   const onDelete = useCallback(
     (index: number) => {
@@ -222,7 +226,8 @@ const ImageCard: FC<ImageCardProps> = (props) => {
   const { imageURL } = useImageURL(imageId);
 
   const onDetect = useCallback(() => {
-    window.screenshot.detectImage(imageURL!);
+    // window.screenshot.detectImage(imageURL!);
+    window.monitor.matchTemplate(imageURL);
   }, [imageURL]);
 
   const onValueChange = useCallback(

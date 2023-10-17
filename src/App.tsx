@@ -27,8 +27,8 @@ const router = createHashRouter([
   },
   {
     path: "monitor",
-    element: <Monitor />
-  }
+    element: <Monitor />,
+  },
 ]);
 
 function App() {

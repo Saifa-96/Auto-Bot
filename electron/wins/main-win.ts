@@ -1,26 +1,17 @@
 import { BrowserWindow, type BrowserWindowConstructorOptions } from "electron";
-import path from "node:path";
-import { VITE_PUBLIC } from "../path";
+import path from "path";
+import { VITE_PUBLIC } from "../source-path";
 
-interface WindowInstance {
-  browser: BrowserWindow;
-}
-
-const windowConfig: BrowserWindowConstructorOptions = {
-  icon: path.join(VITE_PUBLIC, "electron-vite.svg"),
-  webPreferences: {
-    preload: path.join(__dirname, "preload.js"),
-  },
-  width: 1100,
-  height: 700,
-};
-
-class MainWin implements WindowInstance {
-  browser: BrowserWindow;
-
+export class MainWin extends BrowserWindow {
   constructor() {
-    this.browser = new BrowserWindow(windowConfig);
+    const options: BrowserWindowConstructorOptions = {
+      icon: path.join(VITE_PUBLIC, "electron-vite.svg"),
+      webPreferences: {
+        preload: path.join(__dirname, "preload.js"),
+      },
+      width: 1100,
+      height: 700,
+    };
+    super(options);
   }
 }
-
-export default MainWin;

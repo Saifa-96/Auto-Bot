@@ -58,9 +58,8 @@ export const Flow: FC = () => {
 
   const updateMonitor = useUpdateMonitor();
   useEffect(() => {
-    const off = window.screenshot.monitorArea((area) => {
-      const [x, y, w, h] = area;
-      updateMonitor({ x, y, w, h });
+    const off = window.monitor.onChangedGeometry((region) => {
+      updateMonitor(region);
     });
     return () => {
       off();
@@ -94,10 +93,8 @@ export const Flow: FC = () => {
         ...flowData,
       },
       async (state) => {
-        window.screenshot.saveAppSettings({
-          path: null,
-          contents: JSON.stringify(state),
-        });
+        console.log(state)
+        window.configFile.save(JSON.stringify(state));
       }
     );
 

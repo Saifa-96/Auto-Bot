@@ -1,13 +1,15 @@
 import { contextBridge, ipcRenderer } from "electron";
-import { screenshotWindowProps } from "./screenshot";
+import { ipcRendererContext } from "./ipc/ipc-renderer";
+
+type MainWorldContext = typeof ipcRendererContext;
+type Key = keyof MainWorldContext;
 
 declare global {
-  interface Window {
-    screenshot: typeof screenshotWindowProps;
-  }
+  interface Window extends MainWorldContext {}
 }
-
-contextBridge.exposeInMainWorld("screenshot", screenshotWindowProps);
+Object.keys(ipcRendererContext).forEach((key) => {
+  contextBridge.exposeInMainWorld(key, ipcRendererContext[key as Key]);
+});
 
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld("ipcRenderer", withPrototype(ipcRenderer));
