@@ -1,0 +1,1 @@
+poetry run pyinstaller main.py --collect-submodules application --onefile --name myapi   
