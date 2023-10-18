@@ -1,5 +1,5 @@
-import { ipcMain, nativeImage } from "electron";
-import { winMgr, fileMgr, botMgr } from "../managers";
+import { Rectangle, ipcMain, nativeImage } from "electron";
+import { winMgr, fileMgr, botMgr, sctMgr } from "../managers";
 import * as EVENT_NAME from "./event-names";
 
 interface Region {
@@ -14,7 +14,7 @@ export function initIpcMain() {
   ipcMain.on(EVENT_NAME.TOGGLE_MONITOR_VISIBLE, (_event, region?: Region) => {
     if (region) {
       const monitorWin = winMgr.createMonitorWin(region);
-      // Notice main window that the monitor window geometry was changed
+      // Notice main window that the monitor window's geometry was changed
       monitorWin.onChangedGeometry((geometry) => {
         winMgr.mainWin?.webContents.send(
           EVENT_NAME.CHANGED_MONITOR_WINDOW_GEOMETRY,
@@ -26,7 +26,7 @@ export function initIpcMain() {
     }
   });
 
-  // Matching a given image template and showing the area on the monitor window
+  // Matching a given image template and showing the matched area on the monitor window
   ipcMain.on(EVENT_NAME.MATCH_TEMPLATE, (_event, imageURL: string) => {
     const bounds = winMgr.monitorWin?.getBounds();
     if (!bounds) return;
@@ -74,5 +74,34 @@ export function initIpcMain() {
 
   ipcMain.handle(EVENT_NAME.LOAD_CONFIG_FILE, async (_event) => {
     return fileMgr.loadConfigFile();
+  });
+
+  // Take screenshot
+  ipcMain.on(EVENT_NAME.TAKE_SCREENSHOT, async () => {
+    // check system preferences
+    const result = sctMgr.checkScreenPreferences();
+    if (!result) {
+      // TODO show notice to request users open screen permissions
+      return null;
+    }
+
+    // load screenshot window and prepare screenshot image url
+    const sctWin = winMgr.createScreenshotWin();
+    const [imageURL] = await Promise.all([
+      sctMgr.capture(),
+      winMgr.waitWinLoad(sctWin),
+    ]);
+    sctWin.webContents.send(EVENT_NAME.CAPTURED_SCREENSHOT, imageURL);
+
+    // listen crop action
+    ipcMain.once(EVENT_NAME.CROP_SCREENSHOT, (_event, area: Rectangle) => {
+      const croppedImageURL = sctMgr.crop(area);
+      // return cropped image
+      winMgr.mainWin?.webContents.send(
+        EVENT_NAME.CROPPED_SCREENSHOT,
+        croppedImageURL
+      );
+      winMgr.destroyScreenshotWin();
+    });
   });
 }

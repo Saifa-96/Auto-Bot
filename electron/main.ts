@@ -1,6 +1,7 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow } from "electron";
 import { winMgr } from "./managers";
 import { initIpcMain } from "./ipc/ipc-main";
+import path from "path";
 
 // The built directory structure
 //
@@ -12,10 +13,11 @@ import { initIpcMain } from "./ipc/ipc-main";
 // │ │ └── preload.js
 // │
 
-// process.env.DIST = path.join(__dirname, "../dist");
-// process.env.VITE_PUBLIC = app.isPackaged
-//   ? process.env.DIST
-//   : path.join(process.env.DIST, "../public");
+// TODO remove this path code block
+process.env.DIST = path.join(__dirname, "../dist");
+process.env.VITE_PUBLIC = app.isPackaged
+  ? process.env.DIST
+  : path.join(process.env.DIST, "../public");
 
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 // const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
@@ -41,8 +43,4 @@ app.on("activate", () => {
 app.whenReady().then(() => {
   initIpcMain();
   winMgr?.createMainWin();
-});
-
-ipcMain.on("take-screenshot", () => {
-  winMgr?.createScreenshotWin();
 });

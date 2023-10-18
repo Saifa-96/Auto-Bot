@@ -65,7 +65,7 @@ class BotManager {
     process.stdout?.on("data", (data: Buffer) => stdout?.(data));
 
     process.stderr?.on("data", (data: string) => {
-      console.error("stderr: ", data);
+      console.error("stderr: ", data.toString());
     });
 
     process.on("close", (code: string) => {
