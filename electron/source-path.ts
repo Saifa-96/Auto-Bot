@@ -1,4 +1,4 @@
-import path from "node:path";
+import path from "path";
 import { app } from "electron";
 
 export const DIST_PATH = path.join(__dirname, "../dist");

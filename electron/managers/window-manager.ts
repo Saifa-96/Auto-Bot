@@ -1,21 +1,6 @@
 import { BrowserWindow } from "electron";
-import path from "node:path";
 import { MainWin, ScreenshotWin, MonitorWin } from "../wins";
-
-function loadWin(win: BrowserWindow, pathName?: string) {
-  const devPath = pathName ? `#/${pathName}` : "";
-  const proPath = pathName ? `index.html#/${pathName}` : "index.html";
-
-  const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
-  if (VITE_DEV_SERVER_URL) {
-    console.log("vite dev server url: ", VITE_DEV_SERVER_URL + devPath);
-    win.loadURL(VITE_DEV_SERVER_URL + devPath);
-  } else {
-    // win.loadFile('dist/index.html')
-    console.log("load file path: ", process.env.VITE_PUBLIC + proPath);
-    win.loadFile(path.join(process.env.VITE_PUBLIC, proPath));
-  }
-}
+import { VITE_DEV_SERVER_URL, publicSource } from "../source-path";
 
 class WindowManager {
   mainWin: MainWin | null;
@@ -40,16 +25,16 @@ class WindowManager {
     return this.mainWin;
   }
 
-  async createScreenshotWin() {
-    this.screenshotWin = new ScreenshotWin({
-      parentWebContents: this.mainWin?.webContents!,
-    });
-    const result = await this.screenshotWin.prepare();
-    if (result) {
-      this.screenshotWin.establishListener();
-      loadWin(this.screenshotWin, "screenshot");
-    }
+  createScreenshotWin() {
+    this.screenshotWin = new ScreenshotWin();
+    loadWin(this.screenshotWin, "screenshot");
     return this.screenshotWin;
+  }
+
+  waitWinLoad(win: BrowserWindow) {
+    return new Promise((resolve) => {
+      win.once("ready-to-show", () => resolve(undefined));
+    });
   }
 
   createMonitorWin(area: { x: number; y: number; w: number; h: number }) {
@@ -60,6 +45,12 @@ class WindowManager {
 
   isMonitorShowing(): boolean {
     return !!this.monitorWin;
+  }
+
+  destroyScreenshotWin() {
+    this.screenshotWin?.setKiosk(false);
+    this.screenshotWin?.destroy();
+    this.screenshotWin = null;
   }
 
   destroyMonitorWin() {
@@ -74,6 +65,19 @@ class WindowManager {
     this.monitorWin = null;
     this.screenshotWin?.destroy();
     this.screenshotWin = null;
+  }
+}
+
+function loadWin(win: BrowserWindow, pathName?: string) {
+  const devPath = pathName ? `#/${pathName}` : "";
+  const proPath = pathName ? `index.html#/${pathName}` : "index.html";
+
+  if (VITE_DEV_SERVER_URL) {
+    console.log("vite dev server url: ", VITE_DEV_SERVER_URL + devPath);
+    win.loadURL(VITE_DEV_SERVER_URL + devPath);
+  } else {
+    // win.loadFile('dist/index.html')
+    win.loadFile(publicSource(proPath));
   }
 }
 

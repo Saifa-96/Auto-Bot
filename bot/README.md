@@ -1,1 +1,1 @@
-poetry run pyinstaller main.py --collect-submodules application --onefile --name myapi   
+poetry run pyinstaller main.py --onefile --name bot 

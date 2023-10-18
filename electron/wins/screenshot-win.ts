@@ -1,109 +1,18 @@
 import {
   BrowserWindow,
   screen,
-  desktopCapturer,
-  ipcMain,
   type Rectangle,
   type BrowserWindowConstructorOptions,
-  type NativeImage,
-  type WebContents,
 } from "electron";
-import path from "node:path";
-
-interface ScreenshotWinOption {
-  parentWebContents: WebContents;
-}
+import path from "path";
 
 // TODO screen permission problem
 export class ScreenshotWin extends BrowserWindow {
-  _image?: { image: NativeImage; scaleFactor: number };
-  _parentWebContents: WebContents;
-
-  constructor({ parentWebContents }: ScreenshotWinOption) {
+  constructor() {
     const option = initOption();
     super(option);
-
-    this._parentWebContents = parentWebContents;
-  }
-
-  establishListener() {
-    this.once("ready-to-show", () => {
-      this.webContents.send("screenshot-captured", {
-        imageURL: this._image?.image?.toDataURL(),
-      });
-    });
-    this._listenToIpcRenderer();
-  }
-
-  async prepare() {
-    try {
-      const imageItem = await captureScreen();
-      this._image = imageItem;
-      return true;
-    } catch (error) {
-      this.destroy();
-      console.error(error);
-      return false;
-    }
-  }
-
-  private _listenToIpcRenderer() {
-    ipcMain.once("crop-screenshot", (_event, area: Rectangle) => {
-      const { image, scaleFactor } = this._image!;
-      const croppedImage = cropImage(image, area, scaleFactor);
-      this._parentWebContents?.send("cropped-image", croppedImage?.toDataURL());
-      this.setKiosk(false);
-      this.destroy();
-    });
   }
 }
-
-const captureScreen = async () => {
-  // Get the primary display
-  const primaryDisplay = screen.getPrimaryDisplay();
-
-  // Get its size
-  const { width, height } = primaryDisplay.size;
-
-  // Set up the options for the desktopCapturer
-  const options: Electron.SourcesOptions = {
-    types: ["screen"],
-    thumbnailSize: {
-      width: width * primaryDisplay.scaleFactor,
-      height: height * primaryDisplay.scaleFactor,
-    },
-  };
-
-  // Get the sources
-  const sources = await desktopCapturer.getSources(options);
-
-  // Find the primary display's source
-  const primarySource = sources.find(
-    ({ display_id }) => Number(display_id) == primaryDisplay.id
-  );
-
-  // Get the image
-  const image = primarySource?.thumbnail!;
-
-  // Return image data
-  return { image, scaleFactor: primaryDisplay.scaleFactor };
-};
-
-const cropImage = (
-  image: NativeImage,
-  area: Rectangle,
-  scaleFactor: number
-) => {
-  const { width, height } = image.getSize();
-  const scaledWidth = Math.floor(width / scaleFactor);
-  const scaledHeight = Math.floor(height / scaleFactor);
-  const scaledImage = image.resize({
-    width: scaledWidth,
-    height: scaledHeight,
-  });
-  const croppedImage = scaledImage.crop(area);
-  return croppedImage;
-};
 
 interface Display extends Rectangle {
   scaleFactor: number;

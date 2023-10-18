@@ -11,22 +11,22 @@ interface Region {
 export const ipcRendererContext = {
   screenshot: {
     takeScreenshot() {
-      ipcRenderer.send("take-screenshot");
+      ipcRenderer.send(EVENT_NAME.TAKE_SCREENSHOT);
       return new Promise<string>((resolve) => {
-        ipcRenderer.once("cropped-image", (_event, imageURL) => {
+        ipcRenderer.once(EVENT_NAME.CROPPED_SCREENSHOT, (_event, imageURL) => {
           resolve(imageURL);
         });
       });
     },
     capturedScreen() {
       return new Promise<{ imageURL: string }>((resolve) => {
-        ipcRenderer.once("screenshot-captured", (_, item) => {
-          resolve(item);
+        ipcRenderer.once(EVENT_NAME.CAPTURED_SCREENSHOT, (_, imageURL) => {
+          resolve(imageURL);
         });
       });
     },
     cropScreenshot: (area: Rectangle | null) => {
-      ipcRenderer.send("crop-screenshot", area);
+      ipcRenderer.send(EVENT_NAME.CROP_SCREENSHOT, area);
     },
   },
   monitor: {
