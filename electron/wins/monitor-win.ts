@@ -19,6 +19,8 @@ export class MonitorWin extends BrowserWindow {
       height: h,
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
+        // TODO temporarily resolve 'Not allowed to load local resource: xxx' problem
+        // webSecurity: false,
       },
     });
   }
