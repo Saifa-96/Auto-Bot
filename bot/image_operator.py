@@ -1,6 +1,6 @@
-import base64
-import numpy as np
-import cv2
+from base64 import b64decode
+from numpy import uint8, frombuffer
+from cv2 import imdecode, IMREAD_COLOR
 
 
 class ImageOperator:
@@ -15,9 +15,9 @@ class ImageOperator:
 
     def get_ndarray(self, image_id: str):
         base64_image = self.image_dict[image_id]
-        image_data = base64.b64decode(base64_image.split(",")[1])
-        image_array = np.frombuffer(image_data, np.uint8)
-        image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+        image_data = b64decode(base64_image.split(",")[1])
+        image_array = frombuffer(image_data, uint8)
+        image = imdecode(image_array, IMREAD_COLOR)
         return image
 
 

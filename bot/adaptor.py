@@ -1,21 +1,21 @@
-import numpy as np
-import json
+from numpy import integer, floating, ndarray
+from json import JSONEncoder, dumps
 from core.declaration import NextStep, Task, TASK_TYPE
 
 
-class NpEncoder(json.JSONEncoder):
+class NpEncoder(JSONEncoder):
     def default(self, obj):
-        if isinstance(obj, np.integer):
+        if isinstance(obj, integer):
             return int(obj)
-        if isinstance(obj, np.floating):
+        if isinstance(obj, floating):
             return float(obj)
-        if isinstance(obj, np.ndarray):
+        if isinstance(obj, ndarray):
             return obj.tolist()
         return super(NpEncoder, self).default(obj)
 
 
 def json_stringify(obj):
-    return json.dumps(obj, cls=NpEncoder)
+    return dumps(obj, cls=NpEncoder)
 
 
 def cvt_node_to_task(node_json: dict, next_steps: list[NextStep]):

@@ -1,5 +1,5 @@
-import cv2
-import numpy as np
+from cv2 import matchTemplate, TM_CCOEFF_NORMED
+from numpy import ndarray, where
 
 
 class Detector:
@@ -33,11 +33,11 @@ class Detector:
                 point_map[(symbols_x[1], symbols_y[1])] = (x, y)
         return point_map.values()
 
-    def match(self, frame: np.ndarray, template: np.ndarray, threshold=None):
+    def match(self, frame: ndarray, template: ndarray, threshold=None):
         if threshold is None:
             threshold = self.threshold
-        result = cv2.matchTemplate(frame, template, cv2.TM_CCOEFF_NORMED)
-        locArr = np.where(result >= threshold)
+        result = matchTemplate(frame, template, TM_CCOEFF_NORMED)
+        locArr = where(result >= threshold)
         if len(locArr) == 0:
             return []
 

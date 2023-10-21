@@ -1,5 +1,4 @@
-import sys
-import json
+from json import load
 from dataclasses import dataclass
 from core.executor import Region
 
@@ -12,13 +11,13 @@ class Option:
     config_path: str | None
 
 
-def get_option():
+def get_option(argv: list[str]):
     region = None
     image_path = None
     config_path = None
     flow_id = None
 
-    for arg in sys.argv:
+    for arg in argv:
         if arg.startswith("--image="):
             image_path = arg.split("--image=")[1]
         elif arg.startswith("--area="):
@@ -40,5 +39,5 @@ def get_option():
 
 def get_config_json(config_path: str):
     with open(config_path, "r") as file:
-        data = json.load(file)
+        data = load(file)
         return data

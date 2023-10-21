@@ -1,6 +1,6 @@
-import mss
-import numpy as np
-import cv2
+from numpy import array
+from mss import mss
+from cv2 import resize, cvtColor, COLOR_BGRA2BGR
 from pynput import keyboard
 from time import sleep
 from typing import Callable
@@ -48,20 +48,20 @@ class AutoGuiExecutor:
             if key == keyboard.Key.f1:
                 self.stop()
                 self.listener.stop()
-                print('turn off auto bot')
+                print("turn off auto bot")
 
         self.listener = keyboard.Listener(on_press=on_key_press)
         self.listener.start()
 
     def _exec(self, task_id: str):
         # tracemalloc.start()
-        with mss.mss() as sct:
+        with mss() as sct:
 
             def get_frame():
                 img = sct.grab(self._monitor)
-                img_np = np.array(img)
-                img_np_3_channel = cv2.cvtColor(img_np, cv2.COLOR_BGRA2BGR)
-                scaled_frame = cv2.resize(
+                img_np = array(img)
+                img_np_3_channel = cvtColor(img_np, COLOR_BGRA2BGR)
+                scaled_frame = resize(
                     img_np_3_channel,
                     (self.region.w, self.region.h),
                 )

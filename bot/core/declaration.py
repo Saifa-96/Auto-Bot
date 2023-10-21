@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import ndarray
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json, config
 from image_operator import image_operator
@@ -40,7 +40,7 @@ def cvt_image_id_to_image_np(image_id: str):
 @dataclass_json
 @dataclass
 class Template:
-    image: np.ndarray = field(
+    image: ndarray = field(
         metadata=config(
             field_name="imageId",
             decoder=cvt_image_id_to_image_np,
