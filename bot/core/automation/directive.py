@@ -1,15 +1,16 @@
 from typing import Callable
-import numpy as np
+from numpy import ndarray
 from .controller import Controller
 from .detector import Detector
 from ..declaration import Template
+
 
 class Directive:
     def __init__(
         self,
         offset: tuple[float, float],
         threshold: float,
-        get_frame: Callable[[], np.ndarray],
+        get_frame: Callable[[], ndarray],
     ):
         self._get_frame = get_frame
         self.controller = Controller(offset=offset)

@@ -4,18 +4,17 @@ version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
-packages = [{include = "auto_bot"}]
+packages = []
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
-pyinstaller = "^6.0.0"
-pyautogui = "^0.9.54"
 opencv-python = "^4.8.0.76"
-numpy = "^1.26.0"
 mss = "^9.0.1"
-dataclasses-json = "^0.6.1"
 pynput = "^1.7.6"
+dataclasses-json = "^0.6.1"
 
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^6.1.0"
 
 [build-system]
 requires = ["poetry-core"]
