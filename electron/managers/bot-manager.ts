@@ -1,6 +1,7 @@
 import cp from "child_process";
 import { app } from "electron";
 import { publicSource } from "../source-path";
+import { debugLog } from "../utils";
 
 type Process = cp.ChildProcessWithoutNullStreams | cp.ChildProcess;
 
@@ -65,6 +66,7 @@ class BotManager {
     process.stdout?.on("data", (data: Buffer) => stdout?.(data));
 
     process.stderr?.on("data", (data: string) => {
+      debugLog(data.toString());
       console.error("stderr: ", data.toString());
     });
 
@@ -76,9 +78,11 @@ class BotManager {
   }
 
   private _execBot(args: string[]) {
-    this._process = app.isPackaged
-      ? cp.execFile(publicSource("bot"), args)
-      : cp.spawn("python", ["bot/main.py", ...args]);
+    // this._process = app.isPackaged
+    //   ? cp.execFile(publicSource('bot/bot'), args)
+    //   : cp.spawn("python", ["bot/main.py", ...args]);
+    debugLog('args -> ' + args)
+    this._process = cp.execFile(publicSource("../bot/dist/bot/bot"), args);
     return this._process;
   }
 }

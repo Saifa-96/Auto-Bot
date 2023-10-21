@@ -5,6 +5,8 @@ import App from "./App.tsx";
 import "./index.css";
 import "@radix-ui/themes/styles.css";
 
+window.debug.listen();
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Theme hasBackground={false}>

@@ -9,6 +9,15 @@ interface Region {
 }
 
 export const ipcRendererContext = {
+  debug: {
+    listen: () => {
+      const log = (_event: IpcRendererEvent, data: unknown) => {
+        console.log("debug console: ", data);
+      };
+      ipcRenderer.on(EVENT_NAME.DEBUG_CONSOLE, log);
+      return () => ipcRenderer.off(EVENT_NAME.DEBUG_CONSOLE, log);
+    },
+  },
   screenshot: {
     takeScreenshot() {
       ipcRenderer.send(EVENT_NAME.TAKE_SCREENSHOT);

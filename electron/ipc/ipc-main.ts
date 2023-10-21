@@ -80,6 +80,9 @@ export function initIpcMain() {
   ipcMain.on(EVENT_NAME.TAKE_SCREENSHOT, async () => {
     // check system preferences
     const result = sctMgr.checkScreenPreferences();
+
+
+
     if (!result) {
       // TODO show notice to request users open screen permissions
       return null;

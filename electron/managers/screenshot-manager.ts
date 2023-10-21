@@ -36,7 +36,6 @@ class ScreenshotManager {
 
 const checkScreenPreferences = () => {
   const status = systemPreferences.getMediaAccessStatus("screen");
-  console.log("screen preferences: ", status);
   return status === "granted";
 };
 
