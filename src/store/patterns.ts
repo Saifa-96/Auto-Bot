@@ -69,12 +69,14 @@ const createFlowsStore: Creator<FlowsStore> = (set, get) => ({
     set((state) => {
       state.flows.push(createFlow());
     }),
-  updateFlow: (flow, fn) =>
+  updateFlow: (flow, fn) => {
     set((state) => {
       const index = state.flows.findIndex((f) => f.id === flow.id);
       state.flows[index] = flow;
-      fn?.(get());
-    }),
+    })
+
+    fn?.(get())
+  }
 });
 // =================================
 
