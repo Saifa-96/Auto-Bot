@@ -13,6 +13,7 @@ export class MonitorWin extends BrowserWindow {
       alwaysOnTop: true,
       titleBarStyle: "customButtonsOnHover",
       roundedCorners: false,
+      frame: false,
       x,
       y,
       width: w,
