@@ -93,7 +93,7 @@ export const Flow: FC = () => {
         ...flowData,
       },
       async (state) => {
-        console.log(state)
+        console.log('save data: ', state)
         window.configFile.save(JSON.stringify(state));
       }
     );
