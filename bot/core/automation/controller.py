@@ -2,6 +2,8 @@
 # import random
 from random import uniform
 from time import sleep
+from platform import system
+from ctypes import windll
 
 from pynput.mouse import Button, Controller as Mouse
 
@@ -13,6 +15,7 @@ from pynput.mouse import Button, Controller as Mouse
 
 class Controller:
     def __init__(self, offset=(0, 0)):
+        self._scale_factor = 1 if system() == 'Darwin' else windll.shcore.GetScaleFactorForDevice(0) / 100
         self.offset = offset
         self.mouse = Mouse()
 
@@ -20,7 +23,7 @@ class Controller:
         offset_x, offset_y = self.offset
 
         print("click point", x, y)
-        self.mouse.position = (offset_x + x, offset_y + y)
+        self.mouse.position = (offset_x + x * self._scale_factor, offset_y + y * self._scale_factor)
         sleep(0.2)
         self.mouse.click(Button.left)
 

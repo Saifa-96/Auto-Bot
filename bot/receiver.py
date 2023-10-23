@@ -1,6 +1,7 @@
 from json import load
 from dataclasses import dataclass
 from core.executor import Region
+from argparse import ArgumentParser
 
 
 @dataclass
@@ -11,30 +12,26 @@ class Option:
     config_path: str | None
 
 
-def get_option(argv: list[str]):
-    region = None
-    image_path = None
-    config_path = None
-    flow_id = None
+def get_option():
+    argparser = ArgumentParser(description='turning on auto gui bot.')
 
-    for arg in argv:
-        if arg.startswith("--image="):
-            image_path = arg.split("--image=")[1]
-        elif arg.startswith("--area="):
-            region_str = arg.split("--area=")[1]
-            x, y, w, h = list(map(int, region_str.split(",")))
-            region = Region(x=x, y=y, w=w, h=h)
-        elif arg.startswith("--config="):
-            config_path = arg.split("--config=")[1]
-        elif arg.startswith("--flow="):
-            flow_id = arg.split("--flow=")[1]
+    argparser.add_argument('--image', type=str, help='being used for matching area on the monitor.')
+    argparser.add_argument('--flow', type=str, help='being used for starting which flow.')
+    argparser.add_argument('--config', type=str, help='being used for getting config detail.')
+    argparser.add_argument('--area', type=str, help='being used as the monitor area.')
+    args = argparser.parse_args()
+    # print('args: ', args)
+
+    x, y, w, h = list(map(int, args.area.split(",")))
+    region = Region(x=x, y=y, w=w, h=h)
 
     return Option(
-        region=region,
-        image_path=image_path,
-        config_path=config_path,
-        flow_id=flow_id,
+        region,
+        image_path=args.image,
+        config_path=args.config,
+        flow_id=args.flow,
     )
+
 
 
 def get_config_json(config_path: str):
