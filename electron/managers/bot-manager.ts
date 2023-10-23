@@ -1,5 +1,6 @@
 import cp from "child_process";
-import { app } from "electron";
+import process from 'process';
+import { Rectangle, app } from "electron";
 import { publicSource } from "../source-path";
 import { debugLog } from "../utils";
 
@@ -51,15 +52,18 @@ class BotManager {
 
   execBotForMatchTemplate(props: {
     imagePath: string;
-    region: { x: number; y: number; w: number; h: number };
+    region: Rectangle;
     stdout?: (data: Buffer) => void;
     close?: (code: string) => void;
   }) {
     const { imagePath, region, stdout, close } = props;
-    const { x, y, w: width, h: height } = region;
+    const { x, y, width, height } = region;
+
+    const areaStr = [x, y, width, height].toString()
+
     const args = [
       `--image=${imagePath}`,
-      `--area=${[x, y, width, height].toString()}`,
+      `--area=${areaStr}`,
     ];
     const process = this._execBot(args);
 
@@ -78,11 +82,13 @@ class BotManager {
   }
 
   private _execBot(args: string[]) {
-    // this._process = app.isPackaged
-    //   ? cp.execFile(publicSource('bot/bot'), args)
-    //   : cp.spawn("python", ["bot/main.py", ...args]);
+    const executableFilePath = publicSource(process.platform === 'darwin' ? 'bot/bot' : 'bot/bot.exe')
+
+    this._process = app.isPackaged
+      ? cp.execFile(executableFilePath, args)
+      : cp.spawn("python", ["bot/main.py", ...args]);
     debugLog('args -> ' + args)
-    this._process = cp.execFile(publicSource("../bot/dist/bot/bot"), args);
+    // this._process = cp.execFile(publicSource("../bot/dist/bot/bot.exe"), args);
     return this._process;
   }
 }

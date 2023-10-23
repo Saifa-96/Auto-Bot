@@ -34,11 +34,10 @@ export function initIpcMain() {
     const image = nativeImage.createFromDataURL(imageURL);
     const png = image.toPNG();
     const { removeFile, dir } = fileMgr.saveAsTemporaryFile(png, "png");
-    const { x, y, width, height } = bounds;
 
     botMgr.execBotForMatchTemplate({
       imagePath: dir,
-      region: { x, y, w: width, h: height },
+      region: bounds,
       stdout: (data) => {
         const areas = JSON.parse(data.toString());
         console.log("matched areas: ", areas);
