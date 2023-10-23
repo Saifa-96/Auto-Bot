@@ -3,21 +3,25 @@
 from random import uniform
 from time import sleep
 from platform import system
-from ctypes import windll
 
 from pynput.mouse import Button, Controller as Mouse
 
 # import pyperclip
 
-# system = platform.system()
-# isMac = system == "Darwin"
-
 
 class Controller:
     def __init__(self, offset=(0, 0)):
-        self._scale_factor = 1 if system() == 'Darwin' else windll.shcore.GetScaleFactorForDevice(0) / 100
+        self._scale_factor = self._get_scale_factor() 
         self.offset = offset
         self.mouse = Mouse()
+    
+    def _get_scale_factor(self):
+        if system() == 'Darwin':
+            return 1
+        else:
+            from ctypes import windll
+            return windll.shcore.GetScaleFactorForDevice(0) / 100
+            
 
     def point_click(self, x, y):
         offset_x, offset_y = self.offset
