@@ -51,19 +51,22 @@ export function initIpcMain() {
   });
 
   // Execute auto gui bot
-  ipcMain.on(EVENT_NAME.TURN_ON_BOT, (_event, flowId: string) => {
+  ipcMain.handle(EVENT_NAME.TURN_ON_BOT, (_event, flowId: string) => {
     const bounds = winMgr?.monitorWin?.getBounds();
-    if (!bounds) return;
-    winMgr?.monitorWin?.ignoreMouse(true);
+    if (!bounds) return Promise.resolve(false);
 
-    botMgr.execBotForAutoGui({
-      flowId,
-      configFilePath: fileMgr.getConfigFilePath(),
-      region: { x: bounds.x, y: bounds.y, w: bounds.width, h: bounds.height },
-      close: () => {
-        winMgr.monitorWin?.ignoreMouse(false);
-      },
-    });
+    return new Promise((resolve) => {
+      winMgr.monitorWin?.ignoreMouse(true);
+      botMgr.execBotForAutoGui({
+        flowId,
+        configFilePath: fileMgr.getConfigFilePath(),
+        region: { x: bounds.x, y: bounds.y, w: bounds.width, h: bounds.height },
+        close: () => {
+          winMgr.monitorWin?.ignoreMouse(false);
+          resolve(true)
+        },
+      })
+    })
   });
 
   // Save & Load The Config File
