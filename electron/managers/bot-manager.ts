@@ -1,7 +1,7 @@
 import cp from "child_process";
 import process from 'process';
 import { Rectangle, app } from "electron";
-import { publicSource } from "../source-path";
+import { extraResources } from "../source-path";
 import { debugLog } from "../utils";
 
 type Process = cp.ChildProcessWithoutNullStreams | cp.ChildProcess;
@@ -23,6 +23,7 @@ class BotManager {
       flowId,
       configFilePath,
       region: { x, y, w: width, h: height },
+      close
     } = props;
 
     const args = [
@@ -37,12 +38,14 @@ class BotManager {
     });
 
     process.stderr?.on("data", (data: string) => {
+      debugLog(data.toString())
       console.error("stderr: ", data.toString());
     });
 
     process.on("close", (code: string) => {
       console.log(`child process exited with code ${code}`);
       this._process = null;
+      close?.()
     });
 
     return () => {
@@ -82,7 +85,7 @@ class BotManager {
   }
 
   private _execBot(args: string[]) {
-    const executableFilePath = publicSource(process.platform === 'darwin' ? 'bot/bot' : 'bot/bot.exe')
+    const executableFilePath = extraResources(process.platform === 'darwin' ? 'bot/bot' : 'bot/bot.exe')
 
     this._process = app.isPackaged
       ? cp.execFile(executableFilePath, args)

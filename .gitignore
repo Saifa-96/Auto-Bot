@@ -25,4 +25,6 @@ release
 *.sln
 *.sw?
 
+extra-resources/*
+
 public/bot
