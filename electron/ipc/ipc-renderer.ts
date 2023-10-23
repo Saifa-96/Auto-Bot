@@ -12,7 +12,7 @@ export const ipcRendererContext = {
   debug: {
     listen: () => {
       const log = (_event: IpcRendererEvent, data: unknown) => {
-        console.log("debug console: ", data);
+        console.log("ipc-main debug console:\n", data);
       };
       ipcRenderer.on(EVENT_NAME.DEBUG_CONSOLE, log);
       return () => ipcRenderer.off(EVENT_NAME.DEBUG_CONSOLE, log);
@@ -70,7 +70,7 @@ export const ipcRendererContext = {
   },
   bot: {
     turnOn(flowId: string) {
-      ipcRenderer.send(EVENT_NAME.TURN_ON_BOT, flowId);
+      return ipcRenderer.invoke(EVENT_NAME.TURN_ON_BOT, flowId);
     },
   },
   configFile: {
