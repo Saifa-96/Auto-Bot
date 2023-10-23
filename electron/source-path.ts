@@ -12,3 +12,7 @@ export const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
 export function publicSource(fileName: string) {
   return path.join(VITE_PUBLIC, fileName);
 }
+
+export function extraResources(fileName: string) {
+  return path.join(app.getAppPath(), '../extra-resources', fileName)
+}
