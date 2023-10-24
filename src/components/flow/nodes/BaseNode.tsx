@@ -48,7 +48,7 @@ const selector =
     nodeId: string,
     handleType: HandleType,
     isConnectable = true,
-    maxConnections = Infinity
+    handleId?: string
   ) =>
   (s: ReactFlowState) => {
     // If the user props say this handle is not connectable, we don't need to
@@ -56,21 +56,31 @@ const selector =
     if (!isConnectable) return false;
 
     const node = s.nodeInternals.get(nodeId)!;
-    let connectedEdges = getConnectedEdges([node], s.edges).filter(
+    const connectedEdges = getConnectedEdges([node], s.edges);
+
+    if (handleId) {
+      const edgesConnectedWithHandleId = connectedEdges.filter(
+        ({ sourceHandle, targetHandle }) =>
+          sourceHandle === handleId || targetHandle === handleId
+      );
+      return edgesConnectedWithHandleId.length < 1;
+    }
+
+    let filteredEdges = connectedEdges.filter(
       handleType === "source"
         ? (edge) => edge.source === nodeId
         : (edge) => edge.target === nodeId
     );
 
-    return connectedEdges.length < maxConnections;
+    return filteredEdges.length < 1;
   };
 
 export const CustomHandle: FC<CustomHandleProps> = (props) => {
-  const { pos, type, ...rest } = props;
+  const { pos, id, type, ...rest } = props;
 
   const nodeId = useNodeId()!;
   const isConnectable = useStore(
-    useCallback(selector(nodeId, type, props.isConnectable, 1), [
+    useCallback(selector(nodeId, type, props.isConnectable, id), [
       nodeId,
       props.isConnectable,
     ])
@@ -91,6 +101,7 @@ export const CustomHandle: FC<CustomHandleProps> = (props) => {
 
   return (
     <StyledHandle
+      id={id}
       type={type}
       isConnectable={isConnectable}
       position={pos_attr}
