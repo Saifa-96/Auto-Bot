@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from "react";
-import { styled } from "@stitches/react";
+import { styled } from "styled-components";
 import { Button, Card, Flex, Text, Slider, Box } from "@radix-ui/themes";
 import { debounce } from "lodash";
 import { ImageData, TemplateItem } from "../../../core";
@@ -172,13 +172,12 @@ const ImageShowcaseItem: FC<{
   );
 };
 
-const ImageItem = styled("img", {
-  width: "100%",
-  height: "100%",
-  objectFit: "contain",
-
-  verticalAlign: "top",
-});
+const ImageItem = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  vertical-align: top;
+`
 
 interface ImageInput {
   onAddImage: (imageData: ImageData) => void;
@@ -202,13 +201,13 @@ const ImageInput: FC<ImageInput> = (props) => {
   );
 };
 
-const Image = styled("img", {
-  objectFit: "contain",
-  width: 90,
-  height: 90,
-  border: "1px solid #ccc",
-  verticalAlign: "top",
-});
+const Image = styled.img`
+  object-fit: contain;
+  width: 90px;
+  height: 90px;
+  border: 1px solid #ccc;
+  vertical-align: top;
+`
 
 interface ImageCardProps {
   data: TemplateItem;

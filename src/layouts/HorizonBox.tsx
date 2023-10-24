@@ -1,29 +1,27 @@
-import { FC, PropsWithChildren, useMemo } from "react";
-import { styled, CSS } from "@stitches/react";
+import { CSSProperties, FC, PropsWithChildren, useMemo } from "react";
+import { styled } from "styled-components";
 
 interface HorizonBoxItemProps {
   width: number | "stretch";
-  css?: CSS;
+  style?: CSSProperties;
 }
 
-const BoxItem = styled("div", {});
-
-export const HorizonBox = styled("section", {
-  display: "flex",
-  height: "100vh",
-});
+export const HorizonBox = styled.section`
+  display: flex;
+  height: 100vh;
+`;
 
 export const HorizonBoxItem: FC<PropsWithChildren<HorizonBoxItemProps>> = ({
   children,
   width,
-  css,
+  style,
 }) => {
-  const widthProps = useMemo(() => {
+  const widthProps = useMemo<CSSProperties>(() => {
     if (width === "stretch") {
       return { flex: 1 };
     }
     return { width };
   }, [width]);
 
-  return <BoxItem css={{ ...css, ...widthProps }}>{children}</BoxItem>;
+  return <div style={{ ...style, ...widthProps }}>{children}</div>;
 };
