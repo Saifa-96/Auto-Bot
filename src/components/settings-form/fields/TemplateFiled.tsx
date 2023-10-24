@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC, ReactEventHandler, useCallback, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { Button, Card, Flex, Text, Slider, Box } from "@radix-ui/themes";
 import { debounce } from "lodash";
@@ -161,6 +161,7 @@ const ImageShowcaseItem: FC<{
       style={{
         width: 60,
         height: 60,
+        borderRadius: 5,
         ...(isSelected
           ? { border: "2px solid orange" }
           : { border: "2px solid #ccc" }),
@@ -177,7 +178,7 @@ const ImageItem = styled.img`
   height: 100%;
   object-fit: contain;
   vertical-align: top;
-`
+`;
 
 interface ImageInput {
   onAddImage: (imageData: ImageData) => void;
@@ -203,11 +204,12 @@ const ImageInput: FC<ImageInput> = (props) => {
 
 const Image = styled.img`
   object-fit: contain;
-  width: 90px;
-  height: 90px;
+  width: 70px;
+  height: 70px;
   border: 1px solid #ccc;
   vertical-align: top;
-`
+  border-radius: 5px;
+`;
 
 interface ImageCardProps {
   data: TemplateItem;
@@ -223,6 +225,15 @@ const ImageCard: FC<ImageCardProps> = (props) => {
   } = props;
 
   const { imageURL } = useImageURL(imageId);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [imgSizeStr, setImgSizeStr] = useState<string>("loading...");
+
+  const handleImgLoaded = useCallback<ReactEventHandler>((_event) => {
+    if (imgRef.current) {
+      const { naturalWidth, naturalHeight } = imgRef.current;
+      setImgSizeStr(`${naturalWidth} * ${naturalHeight}`);
+    }
+  }, []);
 
   const onDetect = useCallback(() => {
     // window.screenshot.detectImage(imageURL!);
@@ -239,25 +250,30 @@ const ImageCard: FC<ImageCardProps> = (props) => {
   return (
     <Card my="2">
       <Flex>
-        <Image src={imageURL} />
+        <Image ref={imgRef} src={imageURL} onLoad={handleImgLoaded} />
 
         <Box ml="2" grow="1">
-          <Text size="2">Threshold: {threshold}</Text>
-          <Slider
-            mt="2"
-            max={0.9}
-            min={0.1}
-            step={0.01}
-            defaultValue={[threshold]}
-            onValueChange={onValueChange}
-          />
+          <Text size="2">Size: {imgSizeStr}</Text>
+          <div>
+            <Text size="2">Threshold: {threshold}</Text>
+            <Slider
+              mt="2"
+              max={0.9}
+              min={0.1}
+              step={0.01}
+              defaultValue={[threshold]}
+              onValueChange={onValueChange}
+            />
+          </div>
         </Box>
       </Flex>
       <Flex mt="2" gap="2" direction="row-reverse">
-        <Button color="red" onClick={onDelete}>
+        <Button color="red" size="1" onClick={onDelete}>
           Delete
         </Button>
-        <Button onClick={onDetect}>Detect</Button>
+        <Button size="1" onClick={onDetect}>
+          Detect
+        </Button>
       </Flex>
     </Card>
   );

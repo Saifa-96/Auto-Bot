@@ -143,6 +143,11 @@ export const Flow: FC = () => {
         onConnect={onConnect}
         snapGrid={[20, 20]}
         snapToGrid
+        defaultEdgeOptions={{
+          type: 'smoothstep',
+          style: { strokeWidth: 3 }
+        }}
+        style={{ background: '#393939' }}
         onDrop={onDrop}
         onDragOver={onDragOver}
       >

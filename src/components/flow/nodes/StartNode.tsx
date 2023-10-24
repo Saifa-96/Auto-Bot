@@ -1,12 +1,19 @@
 import { FC } from "react";
-import { Handle, Position, type NodeProps } from "reactflow";
-import { BaseNode } from "./BaseNode";
+import { type NodeProps } from "reactflow";
+import { BaseNode, CustomHandle } from "./BaseNode";
 
-export const StartNode: FC<NodeProps> = () => {
+export const StartNode: FC<NodeProps> = (node) => {
   return (
     <>
-      <Handle type="source" position={Position.Right} />
-      <BaseNode background="green">Start</BaseNode>
+      <CustomHandle
+        selected={node.selected}
+        color="#1ba784"
+        type="source"
+        pos="right"
+      />
+      <BaseNode background="#1ba784" selected={node.selected}>
+        Start
+      </BaseNode>
     </>
   );
 };
