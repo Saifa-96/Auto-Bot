@@ -1,8 +1,9 @@
-from core.declaration import Region
 from platform import system
+
+from core.declaration import Region
+from cv2 import COLOR_BGRA2BGR, cvtColor, resize
 from mss import mss
 from numpy import array
-from cv2 import resize, cvtColor, COLOR_BGRA2BGR
 
 
 class Monitor:
