@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { styled } from "@stitches/react";
+import { styled } from 'styled-components'
 
 export const Monitor: FC = () => {
   const [areas, setAreas] = useState<[number, number, number, number][]>([]);
@@ -19,7 +19,7 @@ export const Monitor: FC = () => {
       {areas.toString()}
       {areas.map(([x, y, w, h]) => (
         <AreaBox
-          css={{
+          style={{
             left: x,
             top: y,
             width: w,
@@ -32,25 +32,28 @@ export const Monitor: FC = () => {
   );
 };
 
-const AreaBox = styled("div", {
-  border: "2px solid red",
-  position: "absolute",
-});
+const AreaBox = styled.div`
+  border: 2px solid red;
+  position: absolute;
+`
 
-const Win = styled("div", {
-  height: "100vh",
-  boxSizing: "border-box",
-  border: "2px solid #ccc",
-  position: "relative",
-});
+const Win = styled.div`
+  height: 100vh;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  position: relative;
+`
 
-const Handle = styled("div", {
-  width: 30,
-  height: 30,
-  position: "absolute",
-  bottom: 0,
-  right: 0,
-  background: "Azure",
-  "-webkit-user-select": "none",
-  "-webkit-app-region": "drag",
-});
+const Handle = styled.div`
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: skyblue;
+  user-select: none;
+
+  // electron attrs
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+`

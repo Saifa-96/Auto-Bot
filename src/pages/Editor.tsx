@@ -1,6 +1,6 @@
 import { FC, useCallback } from "react";
 import { ReactFlowProvider } from "reactflow";
-import { styled } from "@stitches/react";
+import { styled } from 'styled-components'
 import { Outlet, useNavigate } from "react-router-dom";
 import { HorizonBox, HorizonBoxItem } from "../layouts";
 import { useFlowList, useMonitRegion } from "../store";
@@ -37,7 +37,7 @@ export const Editor: FC = () => {
       <HorizonBox>
         <HorizonBoxItem
           width={150}
-          css={{
+          style={{
             borderRight: "1px solid #ccc",
             display: "flex",
             flexDirection: "column",
@@ -74,10 +74,10 @@ export const Editor: FC = () => {
   );
 };
 
-const Sidebar = styled("div", {
-  display: "flex",
-  flexDirection: "column",
-  gap: 10,
-  padding: 10,
-  background: "Yellow",
-});
+const Sidebar = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background: yellow;
+`

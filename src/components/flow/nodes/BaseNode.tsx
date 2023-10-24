@@ -1,20 +1,22 @@
-import { styled } from "@stitches/react";
 import { FC, PropsWithChildren } from "react";
+import { styled } from "styled-components";
 
 interface BaseNodeProps {
   background: string;
+  selected: boolean;
 }
 
 export const BaseNode: FC<PropsWithChildren<BaseNodeProps>> = (props) => {
   const { children, background } = props;
-  return <NodeItem css={{ background }}>{children}</NodeItem>;
+  return <NodeItem style={{ background }}>{children}</NodeItem>;
 };
 
-const NodeItem = styled("div", {
-  width: 140,
-  height: 60,
-  boxSizing: "border-box",
-  border: "2px solid #ccc",
-  borderRadius: 10,
-  color: 'White'
-});
+const NodeItem = styled.div`
+  width: 140px;
+  height: 60px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  color: white;
+`;
+

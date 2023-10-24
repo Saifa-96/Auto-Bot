@@ -11,7 +11,7 @@ export const FlowPanel: FC = () => {
         <Flow />
       </HorizonBoxItem>
 
-      <HorizonBoxItem width={300} css={{ borderLeft: "1px solid #ccc" }}>
+      <HorizonBoxItem width={300} style={{ borderLeft: "1px solid #ccc" }}>
         <ScrollArea scrollbars="vertical">
           <div style={{ padding: 10 }}>
             <SettingsForm />
