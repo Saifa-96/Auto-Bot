@@ -9,7 +9,7 @@ window.debug.listen();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Theme hasBackground={false}>
+    <Theme hasBackground={false} >
       <App />
     </Theme>
   </React.StrictMode>
