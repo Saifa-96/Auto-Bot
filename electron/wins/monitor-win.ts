@@ -1,11 +1,12 @@
 import { BrowserWindow } from "electron";
 import path from "node:path";
 
-export class MonitorWin extends BrowserWindow {
+export class MonitorWin {
+  win: BrowserWindow;
+
   constructor(area: { x: number; y: number; w: number; h: number }) {
     const { x, y, w, h } = area;
-
-    super({
+    this.win = new BrowserWindow({
       title: "Monitor",
       backgroundColor: "#00000000",
       transparent: true,
@@ -27,18 +28,19 @@ export class MonitorWin extends BrowserWindow {
   }
 
   getGeometry() {
-    const [x, y] = this.getPosition();
-    const [w, h] = this.getSize();
+    const win = this.win
+    const [x, y] = win.getPosition();
+    const [w, h] = win.getSize();
     return { x, y, w, h };
   }
 
   ignoreMouse(bool: boolean) {
     if (bool) {
-      this.setIgnoreMouseEvents(true, {
+      this.win.setIgnoreMouseEvents(true, {
         forward: true,
       });
     } else {
-      this.setIgnoreMouseEvents(false);
+      this.win.setIgnoreMouseEvents(false);
     }
   }
 
@@ -49,7 +51,7 @@ export class MonitorWin extends BrowserWindow {
       const area = this.getGeometry();
       callback(area);
     };
-    this.on("resized", fn);
-    this.on("moved", fn);
+    this.win.on("resized", fn);
+    this.win.on("moved", fn);
   }
 }

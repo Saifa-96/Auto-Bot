@@ -27,8 +27,8 @@ process.env.VITE_PUBLIC = app.isPackaged
 // explicitly with Cmd + Q.
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
-    app.quit();
     winMgr?.cleanAllWins();
+    app.quit();
   }
 });
 

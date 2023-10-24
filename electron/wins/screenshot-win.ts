@@ -7,10 +7,12 @@ import {
 import path from "path";
 
 // TODO screen permission problem
-export class ScreenshotWin extends BrowserWindow {
+export class ScreenshotWin {
+  win: BrowserWindow
+
   constructor() {
     const option = initOption();
-    super(option);
+    this.win = new BrowserWindow(option)
   }
 }
 

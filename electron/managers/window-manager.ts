@@ -15,19 +15,19 @@ class WindowManager {
 
   createMainWin() {
     this.mainWin = new MainWin();
-    this.mainWin.on("close", () => {
-      this.monitorWin?.destroy();
+    this.mainWin.win.on("close", () => {
+      this.monitorWin?.win.destroy();
     });
 
-    loadWin(this.mainWin);
+    loadWin(this.mainWin.win);
 
-    this.mainWin.webContents.openDevTools();
+    this.mainWin.win.webContents.openDevTools();
     return this.mainWin;
   }
 
   createScreenshotWin() {
     this.screenshotWin = new ScreenshotWin();
-    loadWin(this.screenshotWin, "screenshot");
+    loadWin(this.screenshotWin.win, "screenshot");
     return this.screenshotWin;
   }
 
@@ -39,7 +39,7 @@ class WindowManager {
 
   createMonitorWin(area: { x: number; y: number; w: number; h: number }) {
     this.monitorWin = new MonitorWin(area);
-    loadWin(this.monitorWin, "monitor");
+    loadWin(this.monitorWin.win, "monitor");
     return this.monitorWin;
   }
 
@@ -48,22 +48,22 @@ class WindowManager {
   }
 
   destroyScreenshotWin() {
-    this.screenshotWin?.setKiosk(false);
-    this.screenshotWin?.destroy();
+    this.screenshotWin?.win.setKiosk(false);
+    this.screenshotWin?.win.destroy();
     this.screenshotWin = null;
   }
 
   destroyMonitorWin() {
-    this.monitorWin?.destroy();
+    this.monitorWin?.win.destroy();
     this.monitorWin = null;
   }
 
   cleanAllWins() {
-    this.mainWin?.destroy();
+    this.mainWin?.win.destroy();
     this.mainWin = null;
-    this.monitorWin?.destroy();
+    this.monitorWin?.win.destroy();
     this.monitorWin = null;
-    this.screenshotWin?.destroy();
+    this.screenshotWin?.win.destroy();
     this.screenshotWin = null;
   }
 }
