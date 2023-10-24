@@ -10,7 +10,6 @@ import { useParams } from "react-router-dom";
 import ReactFlow, {
   Controls,
   Background,
-  Panel,
   useReactFlow,
   applyNodeChanges,
   applyEdgeChanges,
@@ -20,31 +19,19 @@ import ReactFlow, {
   OnConnect,
   Edge,
   Node,
-  ReactFlowJsonObject,
 } from "reactflow";
 import { nodeTypes } from "./nodes";
 import { useFlow, useUpdateMonitor } from "../../store";
 import { NODE_TYPE, createNodeByType } from "../../core";
-import { Button } from "@radix-ui/themes";
 import "reactflow/dist/style.css";
+import { TopPanel } from "./Panel";
 
 const proOptions = { hideAttribution: true };
-
-const simplifyFlowData = (obj: ReactFlowJsonObject) => {
-  const { nodes } = obj;
-  const simplifiedNodes = nodes.map((node) => ({
-    id: node.id,
-    type: node.type,
-    data: node.data,
-    position: node.position,
-  }));
-  return { ...obj, nodes: simplifiedNodes };
-};
 
 export const Flow: FC = () => {
   const instance = useReactFlow();
   const { flowId } = useParams();
-  const { flow, updateFlow } = useFlow(flowId!);
+  const { flow } = useFlow(flowId!);
 
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
@@ -81,25 +68,6 @@ export const Flow: FC = () => {
   );
 
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
-
-  const onSave = useCallback(() => {
-    const jsonObj = instance.toObject();
-    const flowData = simplifyFlowData(jsonObj);
-
-    updateFlow(
-      {
-        id: flow.id,
-        name: flow.name,
-        ...flowData,
-      },
-      async (state) => {
-        console.log('save data: ', state)
-        window.configFile.save(JSON.stringify(state));
-      }
-    );
-
-    console.log("json data", jsonObj);
-  }, []);
 
   const onDragOver = useCallback<DragEventHandler>((event) => {
     event.preventDefault();
@@ -144,18 +112,16 @@ export const Flow: FC = () => {
         snapGrid={[20, 20]}
         snapToGrid
         defaultEdgeOptions={{
-          type: 'smoothstep',
-          style: { strokeWidth: 3 }
+          type: "smoothstep",
+          style: { strokeWidth: 3 },
         }}
-        style={{ background: '#393939' }}
+        style={{ background: "#393939" }}
         onDrop={onDrop}
         onDragOver={onDragOver}
       >
         <Background />
         <Controls />
-        <Panel position="top-right">
-          <Button onClick={onSave}>Save</Button>
-        </Panel>
+        <TopPanel />
       </ReactFlow>
     </div>
   );
