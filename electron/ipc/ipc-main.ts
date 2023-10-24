@@ -16,7 +16,7 @@ export function initIpcMain() {
       const monitorWin = winMgr.createMonitorWin(region);
       // Notice main window that the monitor window's geometry was changed
       monitorWin.onChangedGeometry((geometry) => {
-        winMgr.mainWin?.webContents.send(
+        winMgr.mainWin?.win.webContents.send(
           EVENT_NAME.CHANGED_MONITOR_WINDOW_GEOMETRY,
           geometry
         );
@@ -28,7 +28,7 @@ export function initIpcMain() {
 
   // Matching a given image template and showing the matched area on the monitor window
   ipcMain.on(EVENT_NAME.MATCH_TEMPLATE, (_event, imageURL: string) => {
-    const bounds = winMgr.monitorWin?.getBounds();
+    const bounds = winMgr.monitorWin?.win.getBounds();
     if (!bounds) return;
 
     const image = nativeImage.createFromDataURL(imageURL);
@@ -41,7 +41,7 @@ export function initIpcMain() {
       stdout: (data) => {
         const areas = JSON.parse(data.toString());
         console.log("matched areas: ", areas);
-        winMgr?.monitorWin?.webContents.send(
+        winMgr?.monitorWin?.win.webContents.send(
           EVENT_NAME.DRAW_MATCHED_REGION,
           areas
         );
@@ -52,7 +52,7 @@ export function initIpcMain() {
 
   // Execute auto gui bot
   ipcMain.handle(EVENT_NAME.TURN_ON_BOT, (_event, flowId: string) => {
-    const bounds = winMgr?.monitorWin?.getBounds();
+    const bounds = winMgr?.monitorWin?.win.getBounds();
     if (!bounds) return Promise.resolve(false);
 
     return new Promise((resolve) => {
@@ -94,15 +94,15 @@ export function initIpcMain() {
     const sctWin = winMgr.createScreenshotWin();
     const [imageURL] = await Promise.all([
       sctMgr.capture(),
-      winMgr.waitWinLoad(sctWin),
+      winMgr.waitWinLoad(sctWin.win),
     ]);
-    sctWin.webContents.send(EVENT_NAME.CAPTURED_SCREENSHOT, imageURL);
+    sctWin.win.webContents.send(EVENT_NAME.CAPTURED_SCREENSHOT, imageURL);
 
     // listen crop action
     ipcMain.once(EVENT_NAME.CROP_SCREENSHOT, (_event, area: Rectangle) => {
       const croppedImageURL = sctMgr.crop(area);
       // return cropped image
-      winMgr.mainWin?.webContents.send(
+      winMgr.mainWin?.win.webContents.send(
         EVENT_NAME.CROPPED_SCREENSHOT,
         croppedImageURL
       );
