@@ -1,5 +1,5 @@
 from base64 import b64decode
-from numpy import uint8, frombuffer
+from numpy import uint8, frombuffer, fromfile
 from cv2 import imdecode, IMREAD_COLOR
 
 
@@ -19,6 +19,12 @@ class ImageOperator:
         image_array = frombuffer(image_data, uint8)
         image = imdecode(image_array, IMREAD_COLOR)
         return image
+    
+    """Read image, solve the problem that imread can not read Chinese paths"""
+    def cv_imread(self, file_path: str):
+        arr = fromfile(file_path, dtype=uint8)
+        cv_img = imdecode(arr, -1)
+        return cv_img
 
 
 image_operator = ImageOperator()

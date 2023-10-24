@@ -1,5 +1,4 @@
 from sys import stdout
-from cv2 import imread
 from core.automation import Detector, Monitor
 from receiver import get_option, get_config_json, Region
 from adaptor import json_stringify, adapt_config
@@ -7,12 +6,11 @@ from image_operator import image_operator
 from core.executor import AutoGuiExecutor
 
 
-
 def detect_target_image(image_path: str, region: Region):
     m = Monitor(region)
     frame = m.get_frame()
     detector = Detector(threshold=0.75)
-    img = imread(image_path)
+    img = image_operator.cv_imread(image_path)
     matched_area = detector.match(frame, img, threshold=0.85)
     matched_area_list = list(map(list, matched_area))
     return matched_area_list
