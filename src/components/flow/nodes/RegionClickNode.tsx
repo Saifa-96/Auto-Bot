@@ -1,13 +1,26 @@
 import { FC } from "react";
-import { Handle, Position, type NodeProps } from "reactflow";
-import { BaseNode } from "./BaseNode";
+import { type NodeProps } from "reactflow";
 
-export const RegionClickNode: FC<NodeProps> = () => {
+import { BaseNode, CustomHandle } from "./BaseNode";
+
+export const RegionClickNode: FC<NodeProps> = (node) => {
   return (
     <>
-      <Handle type="target" position={Position.Left} />
-      <Handle type="source" position={Position.Right} />
-      <BaseNode background="#999">Region Click Node</BaseNode>
+      <CustomHandle
+        selected={node.selected}
+        color="#61649f"
+        type="target"
+        pos="left"
+      />
+      <CustomHandle
+        selected={node.selected}
+        color="#61649f"
+        type="source"
+        pos="right"
+      />
+      <BaseNode background="#61649f" selected={node.selected}>
+        Region Click Node
+      </BaseNode>
     </>
   );
 };

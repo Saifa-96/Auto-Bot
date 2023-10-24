@@ -1,13 +1,25 @@
 import { FC } from "react";
-import { Handle, Position, type NodeProps } from "reactflow";
-import { BaseNode } from "./BaseNode";
+import { type NodeProps } from "reactflow";
+import { BaseNode, CustomHandle } from "./BaseNode";
 
-export const MatchClickNode: FC<NodeProps> = () => {
+export const MatchClickNode: FC<NodeProps> = (node) => {
   return (
     <>
-      <Handle type="target" position={Position.Left} />
-      <Handle type="source" position={Position.Right} />
-      <BaseNode background="#444">Match Click Node</BaseNode>
+      <CustomHandle
+        selected={node.selected}
+        color="#1772b4"
+        type="target"
+        pos="left"
+      />
+      <CustomHandle
+        selected={node.selected}
+        color="#1772b4"
+        type="source"
+        pos="right"
+      />
+      <BaseNode background="#1772b4" selected={node.selected}>
+        Match Click Node
+      </BaseNode>
     </>
   );
 };
