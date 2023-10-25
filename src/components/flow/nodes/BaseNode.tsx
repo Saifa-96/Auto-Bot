@@ -26,8 +26,8 @@ export const BaseNode: FC<PropsWithChildren<BaseNodeProps>> = (props) => {
 };
 
 const NodeItem = styled.div<{ selected?: boolean }>`
-  width: 160px;
-  height: 60px;
+  width: 140px;
+  height: 40px;
   font-weight: 600;
   border: 2px solid ${(props) => (props.selected ? "white" : "transparent")};
   border-radius: 10px;

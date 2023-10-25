@@ -18,7 +18,7 @@ export const MatchClickNode: FC<NodeProps> = (node) => {
         pos="right"
       />
       <BaseNode background="#1772b4" selected={node.selected}>
-        Match Click Node
+        Match Click
       </BaseNode>
     </>
   );

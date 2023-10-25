@@ -11,7 +11,7 @@ export interface FlowData {
 }
 
 export const createFlow = (): FlowData => {
-  const nodes = [createNodeByType(NODE_TYPE.START)];
+  const nodes = [createNodeByType(NODE_TYPE.START, { x: 20, y: 100 })];
   const flowData: FlowData = {
     id: uuid(),
     name: "New Flow",
