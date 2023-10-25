@@ -9,6 +9,11 @@ interface Region {
 }
 
 export const ipcRendererContext = {
+  geometry: {
+    resize: (w: number, h: number) => {
+      ipcRenderer.send(EVENT_NAME.CHANGE_GEOMETRY, w, h)
+    }
+  },
   debug: {
     listen: () => {
       const log = (_event: IpcRendererEvent, data: unknown) => {

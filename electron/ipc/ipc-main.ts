@@ -63,10 +63,10 @@ export function initIpcMain() {
         region: { x: bounds.x, y: bounds.y, w: bounds.width, h: bounds.height },
         close: () => {
           winMgr.monitorWin?.ignoreMouse(false);
-          resolve(true)
+          resolve(true);
         },
-      })
-    })
+      });
+    });
   });
 
   // Save & Load The Config File
@@ -82,8 +82,6 @@ export function initIpcMain() {
   ipcMain.on(EVENT_NAME.TAKE_SCREENSHOT, async () => {
     // check system preferences
     const result = sctMgr.checkScreenPreferences();
-
-
 
     if (!result) {
       // TODO show notice to request users open screen permissions
@@ -109,4 +107,14 @@ export function initIpcMain() {
       winMgr.destroyScreenshotWin();
     });
   });
+
+  // changing windows's geometry
+  ipcMain.on(
+    EVENT_NAME.CHANGE_GEOMETRY,
+    (_event, width: number, height: number) => {
+      const mainWin = winMgr.mainWin?.win;
+      mainWin?.setSize(width, height);
+      mainWin?.center();
+    }
+  );
 }
