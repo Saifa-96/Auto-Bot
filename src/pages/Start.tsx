@@ -1,7 +1,9 @@
 import { FC, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button, Flex } from "@radix-ui/themes";
+import { FilePlusIcon, FileTextIcon } from "@radix-ui/react-icons";
+import { styled } from "styled-components";
 import { useVersion } from "../store";
-import { Button } from "@radix-ui/themes";
 
 export const Start: FC = () => {
   const navigate = useNavigate();
@@ -9,21 +11,35 @@ export const Start: FC = () => {
 
   const newProject = useCallback(() => {
     const flowId = init();
-    navigate(`/editor/flow/${flowId}`);
+    window.geometry.resize(1100, 700);
+    setTimeout(() => navigate(`/editor/flow/${flowId}`), 0);
   }, []);
 
   const openProject = useCallback(async () => {
     const result = await window.configFile.load();
-    console.log('load project: ', result)
+    console.log("load project: ", result);
     const flowId = JSON.parse(result).flows[0].id;
     set(JSON.parse(result));
-    navigate(`/editor/flow/${flowId}`);
+    window.geometry.resize(1100, 700);
+    setTimeout(() => navigate(`/editor/flow/${flowId}`), 0);
   }, []);
 
   return (
-    <section>
-      <Button onClick={newProject}>New Project</Button>
-      <Button onClick={openProject}>Open Project</Button>
-    </section>
+    <StyledSection>
+      <Flex justify="between">
+        <Button onClick={newProject}>
+          <FilePlusIcon />
+          New Project
+        </Button>
+        <Button onClick={openProject}>
+          <FileTextIcon />
+          Open Project
+        </Button>
+      </Flex>
+    </StyledSection>
   );
 };
+
+const StyledSection = styled.section`
+  padding: 10px;
+`;

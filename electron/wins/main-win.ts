@@ -11,8 +11,8 @@ export class MainWin {
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
       },
-      width: 1100,
-      height: 700,
+      width: 400,
+      height: 500,
     };
 
     this.win = new BrowserWindow(options)
