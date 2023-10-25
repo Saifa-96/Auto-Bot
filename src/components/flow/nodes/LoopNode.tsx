@@ -35,7 +35,7 @@ export const LoopNode: FC<NodeProps<LoopSettings>> = (node) => {
         );
       })}
       <BaseNode background="#815c94" selected={node.selected}>
-        Loop Node
+        Loop
       </BaseNode>
     </>
   );

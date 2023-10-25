@@ -19,7 +19,7 @@ export const RegionClickNode: FC<NodeProps> = (node) => {
         pos="right"
       />
       <BaseNode background="#61649f" selected={node.selected}>
-        Region Click Node
+        Region Click
       </BaseNode>
     </>
   );
