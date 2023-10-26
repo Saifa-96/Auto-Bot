@@ -18,7 +18,7 @@ import {
   Checkbox,
   Flex,
 } from "@radix-ui/themes";
-import { AddFlowDialog, SaveAlertDialog } from "../components/dialog";
+import { AddFlowDialog, SaveAlertDialog } from "../components";
 
 export const Editor: FC = () => {
   const { flowId } = useParams();
