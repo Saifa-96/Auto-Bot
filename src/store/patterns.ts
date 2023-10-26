@@ -20,6 +20,7 @@ interface ImageData {
 interface ImageStore {
   images: ImageData[];
   addImage: (imageURL: string) => ImageData;
+  removeImages: (indices: number[]) => void;
 }
 
 const createImageStore: Creator<ImageStore> = (set) => ({
@@ -30,6 +31,13 @@ const createImageStore: Creator<ImageStore> = (set) => ({
       state.images.push(data);
     });
     return data;
+  },
+  removeImages: (indices: number[]) => {
+    set((state) => {
+      indices.forEach((i) => {
+        state.images.splice(i, 1);
+      });
+    });
   },
 });
 // ================================

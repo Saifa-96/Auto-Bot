@@ -2,16 +2,29 @@ import { Node, XYPosition } from "reactflow";
 import { v4 as uuid } from "uuid";
 
 import { NODE_TYPE } from "./base";
-import { initStartSettings } from "./start";
-import { initRegionClickSettings } from "./region-click";
-import { initLoopSettings } from "./loop";
-import { initMatchClickSettings } from "./match-click";
+import { initStartSettings, getUsedImages as getImagesInStart } from "./start";
+import {
+  initRegionClickSettings,
+  getUsedImages as getImagesInRegionClick,
+} from "./region-click";
+import { initLoopSettings, getUsedImages as getImagesInLoop } from "./loop";
+import {
+  initMatchClickSettings,
+  getUsedImages as getImagesInMatchClick,
+} from "./match-click";
 
 const dataFactorMap = {
   [NODE_TYPE.START]: initStartSettings,
   [NODE_TYPE.REGION_CLICK]: initRegionClickSettings,
   [NODE_TYPE.LOOP]: initLoopSettings,
   [NODE_TYPE.MATCH_CLICK]: initMatchClickSettings,
+};
+
+export const getImages = {
+  [NODE_TYPE.START]: getImagesInStart,
+  [NODE_TYPE.REGION_CLICK]: getImagesInRegionClick,
+  [NODE_TYPE.LOOP]: getImagesInLoop,
+  [NODE_TYPE.MATCH_CLICK]: getImagesInMatchClick,
 };
 
 export function createNodeByType(
