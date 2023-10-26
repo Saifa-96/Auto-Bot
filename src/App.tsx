@@ -1,6 +1,6 @@
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import { Start, Editor, Screenshot, Monitor } from "./pages";
-import { FlowPanel } from "./components";
+import { FlowPanel, ImageStore } from "./components";
 
 const router = createHashRouter([
   {
@@ -17,7 +17,7 @@ const router = createHashRouter([
       },
       {
         path: "images",
-        element: <div>images store</div>,
+        element: <ImageStore />,
       },
     ],
   },

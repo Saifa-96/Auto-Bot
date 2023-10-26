@@ -3,7 +3,9 @@ import { styled } from "styled-components";
 import { Button, Card, Flex, Text, Slider, Box } from "@radix-ui/themes";
 import { debounce } from "lodash";
 import { ImageData, TemplateItem } from "../../../core";
-import { useAddImage, useImageURL } from "../../../store";
+import { useImageURL } from "../../../store";
+import { ImageShowcase } from "../../ImageShowcase";
+import { ScreenshotButton } from "../../ScreenshotButton";
 
 interface TemplateInputProps {
   value: TemplateItem;
@@ -115,7 +117,9 @@ export const TemplatesInput: FC<TemplatesInputProps> = (props) => {
 
   return (
     <Flex direction="column">
-      <ImageInput onAddImage={addedImage} />
+      <Box my="2">
+        <ScreenshotButton onAddImage={addedImage} />
+      </Box>
       <ImageShowcase sources={sources} index={index} onIndexChange={setIndex} />
       {index !== null && (
         <ImageCard
@@ -126,79 +130,6 @@ export const TemplatesInput: FC<TemplatesInputProps> = (props) => {
         />
       )}
     </Flex>
-  );
-};
-
-interface ImageShowcaseProps {
-  sources: string[];
-  index: number | null;
-  onIndexChange: (i: number) => void;
-}
-
-const ImageShowcase: FC<ImageShowcaseProps> = (props) => {
-  const { sources, index, onIndexChange } = props;
-  return (
-    <Flex wrap="wrap" gap="2">
-      {sources.map((src, i) => (
-        <ImageShowcaseItem
-          isSelected={i === index}
-          key={src}
-          src={src}
-          onClick={() => onIndexChange(i)}
-        />
-      ))}
-    </Flex>
-  );
-};
-
-const ImageShowcaseItem: FC<{
-  isSelected: boolean;
-  src: string;
-  onClick: () => void;
-}> = ({ isSelected, src, onClick }) => {
-  return (
-    <Box
-      style={{
-        width: 60,
-        height: 60,
-        borderRadius: 5,
-        ...(isSelected
-          ? { border: "2px solid orange" }
-          : { border: "2px solid #ccc" }),
-      }}
-      onClick={onClick}
-    >
-      <ImageItem src={src} />
-    </Box>
-  );
-};
-
-const ImageItem = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  vertical-align: top;
-`;
-
-interface ImageInput {
-  onAddImage: (imageData: ImageData) => void;
-}
-
-const ImageInput: FC<ImageInput> = (props) => {
-  const { onAddImage } = props;
-
-  // const addImages = useAppSettings.use.addImage();
-  const addImage = useAddImage();
-  const takeScreenshot = useCallback(async () => {
-    const imageURL = await window.screenshot.takeScreenshot();
-    const imageData = addImage(imageURL);
-    onAddImage(imageData);
-  }, [onAddImage]);
-
-  return (
-    <Box my="2">
-      <Button onClick={takeScreenshot}>Screenshot</Button>
-    </Box>
   );
 };
 
