@@ -101,7 +101,9 @@ export const Editor: FC = () => {
               </Sidebar>
             </ScrollArea>
           </div>
+
           <Separator my="2" size="4" />
+
           <Button m="2" onClick={() => handleNavigateTo("/editor/images")}>
             Images
           </Button>

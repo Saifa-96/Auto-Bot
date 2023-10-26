@@ -9,3 +9,7 @@ export const initMatchClickSettings = (): MatchClickSettings => {
     targets: [],
   };
 };
+
+export const getUsedImages = (data: MatchClickSettings): string[] => {
+  return data.targets.filter((t) => !!t.imageId).map((t) => t.imageId!);
+};

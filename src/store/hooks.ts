@@ -2,7 +2,8 @@ import { Store } from "./patterns";
 import useStore from "./create-store";
 import { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
-import { ImageData } from "../core";
+import { ImageData, NODE_TYPE, getImages } from "../core";
+import { has } from "lodash";
 
 const flowSelector = (state: Store) => ({
   flows: state.flows,
@@ -43,12 +44,44 @@ export const useUpdateMonitor = () => useStore(monitorSelector);
 const monitorAreaSelector = (state: Store) => state.monitor;
 export const useMonitRegion = () => useStore(monitorAreaSelector);
 
+const imageStoreSelector = (state: Store) => ({
+  flows: state.flows,
+  images: state.images,
+  removeImages: state.removeImages
+});
+export const useImages = () => {
+  const { flows, images, removeImages } = useStore(imageStoreSelector);
+  const imageItems = useMemo(() => {
+    const imageMap: { [key: string]: string[] } = {};
+    const collect = (nodeId: string, imageIds: string[]) => {
+      imageIds.forEach((imageId) => {
+        if (!has(imageMap, imageId)) {
+          imageMap[imageId] = [nodeId];
+          return;
+        }
+        if (!imageMap[imageId].includes(nodeId)) {
+          imageMap[imageId].push(nodeId);
+        }
+      });
+    };
+
+    flows.forEach((flow) => {
+      flow.nodes.forEach((node) => {
+        const imageIds = getImages[node.type as NODE_TYPE](node.data);
+        collect(node.id, imageIds);
+      });
+    });
+
+    return images.map((i) => ({ ...i, belong: imageMap[i.id] ?? [] }));
+  }, [flows, images]);
+
+  return { images: imageItems, removeImages }
+};
+
 const imagesSelector = (state: Store) => ({
   images: state.images,
   addImage: state.addImage,
 });
-
-export const useImages = () => useStore(imagesSelector);
 
 export function useImageURL(imageId: string | null): {
   imageURL: string;

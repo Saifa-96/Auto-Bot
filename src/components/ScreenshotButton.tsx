@@ -26,5 +26,9 @@ export const ScreenshotButton: FC<ScreenshotButtonProps> = (props) => {
     onAddImage?.(imageData);
   }, [onAddImage]);
 
-  return <Button onClick={capture}>Screenshot</Button>;
+  return (
+    <Button size="1" onClick={capture}>
+      Screenshot
+    </Button>
+  );
 };
