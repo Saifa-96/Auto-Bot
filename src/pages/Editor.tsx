@@ -1,9 +1,15 @@
-import { FC, useCallback } from "react";
+import { FC, useCallback, useEffect, useRef } from "react";
 import { ReactFlowProvider } from "reactflow";
-import { styled } from 'styled-components'
-import { Outlet, useNavigate } from "react-router-dom";
+import { styled } from "styled-components";
+import { PlusIcon } from "@radix-ui/react-icons";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { HorizonBox, HorizonBoxItem } from "../layouts";
-import { useFlowList, useMonitRegion } from "../store";
+import {
+  useAddFlow,
+  useFlowList,
+  useMonitRegion,
+  useUpdateMonitor,
+} from "../store";
 import {
   Button,
   ScrollArea,
@@ -12,25 +18,54 @@ import {
   Checkbox,
   Flex,
 } from "@radix-ui/themes";
+import { AddFlowDialog, SaveAlertDialog } from "../components/dialog";
 
 export const Editor: FC = () => {
+  const { flowId } = useParams();
   const navigate = useNavigate();
   const flowList = useFlowList();
+  const { addFlow } = useAddFlow();
 
   const region = useMonitRegion();
+
   const onValueChange = useCallback(
     (isShowMonitor: boolean) => {
       if (isShowMonitor) {
         console.log("monitor area: ", region);
-        // window.screenshot.showMonitor(area);
         window.monitor.open(region);
       } else {
-        // window.screenshot.hideMonitor();
         window.monitor.close();
       }
     },
     [region]
   );
+
+  const updateMonitor = useUpdateMonitor();
+  useEffect(() => {
+    const off = window.monitor.onChangedGeometry((region) => {
+      updateMonitor(region);
+    });
+    return () => {
+      off();
+    };
+  }, [updateMonitor]);
+
+  const alertDialogRef = useRef<{ alert: () => Promise<boolean> } | null>(null);
+  const handleToggleFlow = useCallback(async (flowId: string) => {
+    const state = sessionStorage.getItem("editing-state");
+    if (state === "true") {
+      const result = await alertDialogRef.current?.alert();
+      if (!result) return;
+    }
+    sessionStorage.setItem("editing-state", "false");
+    navigate("/editor/flow/" + flowId);
+  }, []);
+
+  // TODO asking whether close window when the flow data hasn't saved.
+  const handleAddFlow = useCallback((name: string) => {
+    const flow = addFlow(name);
+    handleToggleFlow(flow.id);
+  }, []);
 
   return (
     <ReactFlowProvider>
@@ -48,12 +83,19 @@ export const Editor: FC = () => {
               <Sidebar>
                 {flowList.map((flow) => (
                   <Button
+                    color={flowId === flow.id ? "orange" : undefined}
                     key={flow.id}
-                    onClick={() => navigate("/editor/flow/" + flow.id)}
+                    onClick={() => handleToggleFlow(flow.id)}
                   >
                     {flow.name}
                   </Button>
                 ))}
+                <AddFlowDialog onSave={handleAddFlow}>
+                  <Button>
+                    <PlusIcon />
+                    Add Flow
+                  </Button>
+                </AddFlowDialog>
               </Sidebar>
             </ScrollArea>
           </div>
@@ -70,6 +112,8 @@ export const Editor: FC = () => {
 
         <Outlet />
       </HorizonBox>
+
+      <SaveAlertDialog ref={alertDialogRef} />
     </ReactFlowProvider>
   );
 };
@@ -79,5 +123,4 @@ const Sidebar = styled.div`
   flex-direction: column;
   gap: 10px;
   padding: 10px;
-  background: yellow;
-`
+`;

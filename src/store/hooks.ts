@@ -12,7 +12,6 @@ export const useFlow = (flowId: string) => {
   const { flows, updateFlow } = useStore(flowSelector);
 
   const flow = useMemo(() => {
-    console.log("flow data:", flows);
     return flows.find((f) => f.id === flowId);
   }, [flows, flowId]);
 
@@ -23,13 +22,13 @@ export const useFlow = (flowId: string) => {
   return { flow, updateFlow };
 };
 
+const addFlowSelector = (state: Store) => ({ addFlow: state.addFlow });
+export const useAddFlow = () => useStore(addFlowSelector);
+
 const flowListSelector = (state: Store) => {
   return state.flows.map((f) => ({ name: f.name, id: f.id }));
 };
-export const useFlowList = () => {
-  const flowList = useStore(useShallow(flowListSelector));
-  return flowList;
-};
+export const useFlowList = () => useStore(useShallow(flowListSelector));
 
 const versionSelector = (state: Store) => ({
   version: state.version,

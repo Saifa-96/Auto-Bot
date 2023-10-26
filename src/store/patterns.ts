@@ -59,24 +59,27 @@ const createMonitorStore: Creator<MonitorStore> = (set) => ({
 // ========== Flows Store ==========
 interface FlowsStore {
   flows: FlowData[];
-  addFlow: () => void;
+  addFlow: (name: string) => FlowData;
   updateFlow: (flow: FlowData, fn: (state: Store) => void) => void;
 }
 
 const createFlowsStore: Creator<FlowsStore> = (set, get) => ({
   flows: [],
-  addFlow: () =>
+  addFlow: (name: string) => {
+    const flow = createFlow(name);
     set((state) => {
-      state.flows.push(createFlow());
-    }),
+      state.flows.push(flow);
+    });
+    return flow;
+  },
   updateFlow: (flow, fn) => {
     set((state) => {
       const index = state.flows.findIndex((f) => f.id === flow.id);
       state.flows[index] = flow;
-    })
+    });
 
-    fn?.(get())
-  }
+    fn?.(get());
+  },
 });
 // =================================
 

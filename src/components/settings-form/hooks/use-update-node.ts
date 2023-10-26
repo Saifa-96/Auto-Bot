@@ -7,6 +7,7 @@ export const useUpdateNode = <T>() => {
   const updateNodeInternals = useUpdateNodeInternals();
   const update = useCallback(
     (node: Node<T>) => {
+      sessionStorage.setItem("editing-state", "true");
       instance.setNodes((nodes) =>
         nodes.map((nd) => {
           if (nd.id !== node.id) return nd;
@@ -19,4 +20,3 @@ export const useUpdateNode = <T>() => {
   );
   return { update, produce };
 };
-
