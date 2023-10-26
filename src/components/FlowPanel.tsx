@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { ScrollArea } from "@radix-ui/themes";
 import { HorizonBoxItem } from "../layouts";
-import { Flow } from "./flow/Flow";
 import { SettingsForm } from "./settings-form/SettingsForm";
+import { Flow } from "./flow";
 
 export const FlowPanel: FC = () => {
   return (
