@@ -51,20 +51,22 @@ export const Editor: FC = () => {
   }, [updateMonitor]);
 
   const alertDialogRef = useRef<{ alert: () => Promise<boolean> } | null>(null);
-  const handleToggleFlow = useCallback(async (flowId: string) => {
+
+  const handleNavigateTo = useCallback(async (path: string) => {
     const state = sessionStorage.getItem("editing-state");
     if (state === "true") {
       const result = await alertDialogRef.current?.alert();
       if (!result) return;
     }
+
     sessionStorage.setItem("editing-state", "false");
-    navigate("/editor/flow/" + flowId);
+    navigate(path);
   }, []);
 
   // TODO asking whether close window when the flow data hasn't saved.
   const handleAddFlow = useCallback((name: string) => {
     const flow = addFlow(name);
-    handleToggleFlow(flow.id);
+    handleNavigateTo("/editor/flow/" + flow.id);
   }, []);
 
   return (
@@ -85,7 +87,7 @@ export const Editor: FC = () => {
                   <Button
                     color={flowId === flow.id ? "orange" : undefined}
                     key={flow.id}
-                    onClick={() => handleToggleFlow(flow.id)}
+                    onClick={() => handleNavigateTo("/editor/flow/" + flow.id)}
                   >
                     {flow.name}
                   </Button>
@@ -100,7 +102,7 @@ export const Editor: FC = () => {
             </ScrollArea>
           </div>
           <Separator my="2" size="4" />
-          <Button m="2" onClick={() => navigate("/editor/images")}>
+          <Button m="2" onClick={() => handleNavigateTo("/editor/images")}>
             Images
           </Button>
           <Text m="2" as="label" size="2">

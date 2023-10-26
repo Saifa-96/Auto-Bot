@@ -157,7 +157,6 @@ const useFlowEditingState = (): ReactFlowProps => {
       )
     ) {
       setEditingState();
-      console.log("nodes change: ", changes);
     }
   }, []);
 
