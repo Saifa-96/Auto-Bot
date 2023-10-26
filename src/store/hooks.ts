@@ -48,6 +48,8 @@ const imagesSelector = (state: Store) => ({
   addImage: state.addImage,
 });
 
+export const useImages = () => useStore(imagesSelector);
+
 export function useImageURL(imageId: string | null): {
   imageURL: string;
   addImage: (url: string) => ImageData;
