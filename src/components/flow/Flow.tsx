@@ -1,8 +1,10 @@
 import {
   DragEventHandler,
   FC,
+  RefObject,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -19,48 +21,71 @@ import ReactFlow, {
   OnConnect,
   Edge,
   Node,
+  ReactFlowProps,
 } from "reactflow";
+import { mergeProps } from "@react-aria/utils";
 import { nodeTypes } from "./nodes";
-import { useFlow, useUpdateMonitor } from "../../store";
+import { useFlow } from "../../store";
 import { NODE_TYPE, createNodeByType } from "../../core";
-import "reactflow/dist/style.css";
-import { TopPanel } from "./Panel";
+import { TopPanel } from "./TopPanel";
 
-const proOptions = { hideAttribution: true };
+import "reactflow/dist/style.css";
 
 export const Flow: FC = () => {
-  const instance = useReactFlow();
   const { flowId } = useParams();
   const { flow } = useFlow(flowId!);
+  const { reactFlowWrapper, reactflowProps, setFlow } = useFlowOperation();
+  const collectFlowEditingState = useFlowEditingState();
 
+  useEffect(() => {
+    const { nodes, edges } = flow;
+    setFlow(nodes, edges);
+  }, [flowId]);
+
+  const flowProps = useMemo(() => {
+    return mergeProps(reactflowProps, collectFlowEditingState);
+  }, [reactflowProps, collectFlowEditingState]);
+
+  return (
+    <div style={{ height: "100%" }} ref={reactFlowWrapper}>
+      <ReactFlow
+        nodeTypes={nodeTypes}
+        proOptions={{ hideAttribution: true }}
+        snapGrid={[20, 20]}
+        snapToGrid
+        defaultEdgeOptions={{
+          type: "smoothstep",
+          style: { strokeWidth: 3 },
+        }}
+        style={{ background: "#393939" }}
+        {...flowProps}
+      >
+        <Background />
+        <Controls />
+        <TopPanel />
+      </ReactFlow>
+    </div>
+  );
+};
+
+interface UseFlowOperationReturn {
+  reactFlowWrapper: RefObject<HTMLDivElement>;
+  reactflowProps: ReactFlowProps;
+  setFlow: (nodes: Node[], edges: Edge[]) => void;
+}
+
+const useFlowOperation = (): UseFlowOperationReturn => {
+  const instance = useReactFlow();
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
 
-  useEffect(() => {
-    const { nodes, edges, viewport } = flow;
-    setNodes(nodes);
-    setEdges(edges);
-    instance.setViewport(viewport);
-  }, [flowId]);
+  const onNodesChange = useCallback<OnNodesChange>((changes) => {
+    setNodes((nds) => applyNodeChanges(changes, nds));
+  }, []);
 
-  const updateMonitor = useUpdateMonitor();
-  useEffect(() => {
-    const off = window.monitor.onChangedGeometry((region) => {
-      updateMonitor(region);
-    });
-    return () => {
-      off();
-    };
-  }, [updateMonitor]);
-
-  const onNodesChange = useCallback<OnNodesChange>(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
-  );
-  const onEdgesChange = useCallback<OnEdgesChange>(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
-  );
+  const onEdgesChange = useCallback<OnEdgesChange>((changes) => {
+    setEdges((eds) => applyEdgeChanges(changes, eds));
+  }, []);
 
   const onConnect = useCallback<OnConnect>(
     (params) => setEdges((eds) => addEdge(params, eds)),
@@ -94,35 +119,66 @@ export const Flow: FC = () => {
       });
       const newNode = createNodeByType(type, position);
 
-      setNodes((nds) => nds.concat(newNode));
+      // setNodes((nds) => nds.concat(newNode));
+      instance.addNodes([newNode]);
     },
     [instance]
   );
 
-  return (
-    <div style={{ height: "100%" }} ref={reactFlowWrapper}>
-      <ReactFlow
-        nodeTypes={nodeTypes}
-        proOptions={proOptions}
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        snapGrid={[20, 20]}
-        snapToGrid
-        defaultEdgeOptions={{
-          type: "smoothstep",
-          style: { strokeWidth: 3 },
-        }}
-        style={{ background: "#393939" }}
-        onDrop={onDrop}
-        onDragOver={onDragOver}
-      >
-        <Background />
-        <Controls />
-        <TopPanel />
-      </ReactFlow>
-    </div>
-  );
+  const setFlow = useCallback((nodes: Node[], edges: Edge[]) => {
+    setNodes(nodes);
+    setEdges(edges);
+  }, []);
+
+  return {
+    reactFlowWrapper,
+    reactflowProps: {
+      nodes,
+      edges,
+      onNodesChange,
+      onEdgesChange,
+      onConnect,
+      onDrop,
+      onDragOver,
+    },
+    setFlow,
+  };
+};
+
+const setEditingState = () => {
+  sessionStorage.setItem("editing-state", "true");
+};
+
+const useFlowEditingState = (): ReactFlowProps => {
+  const onNodesChange = useCallback<OnNodesChange>((changes) => {
+    if (
+      changes.some(
+        (c) => c.type === "remove" || (c.type === "position" && c.dragging)
+      )
+    ) {
+      setEditingState();
+      console.log("nodes change: ", changes);
+    }
+  }, []);
+
+  const onEdgesChange = useCallback<OnEdgesChange>((changes) => {
+    if (changes.some((c) => c.type === "remove")) {
+      setEditingState();
+    }
+  }, []);
+
+  const onConnect = useCallback<OnConnect>(() => {
+    setEditingState();
+  }, []);
+
+  const onDrop = useCallback(() => {
+    setEditingState();
+  }, []);
+
+  return {
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+    onDrop,
+  };
 };

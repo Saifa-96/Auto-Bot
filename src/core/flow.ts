@@ -10,11 +10,11 @@ export interface FlowData {
   viewport: Viewport;
 }
 
-export const createFlow = (): FlowData => {
+export const createFlow = (flowName: string = "New Flow"): FlowData => {
   const nodes = [createNodeByType(NODE_TYPE.START, { x: 20, y: 100 })];
   const flowData: FlowData = {
     id: uuid(),
-    name: "New Flow",
+    name: flowName,
     viewport: { x: 0, y: 0, zoom: 1 },
     nodes,
     edges: [],

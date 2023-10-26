@@ -47,6 +47,10 @@ class FileManager {
       dir,
     };
   }
+
+  clearConfigFilePath() {
+    this._configFilePath = undefined;
+  }
 }
 
 function requestSavePath() {

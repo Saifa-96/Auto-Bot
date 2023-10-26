@@ -1,5 +1,5 @@
 import { app, BrowserWindow } from "electron";
-import { winMgr } from "./managers";
+import { fileMgr, winMgr } from "./managers";
 import { initIpcMain } from "./ipc/ipc-main";
 import path from "path";
 
@@ -36,6 +36,7 @@ app.on("activate", () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
+    fileMgr.clearConfigFilePath();
     winMgr?.createMainWin();
   }
 });
