@@ -15,6 +15,7 @@ class WindowManager {
 
   createMainWin() {
     this.mainWin = new MainWin();
+    this.mainWin.win.removeMenu();
     this.mainWin.win.on("close", () => {
       this.monitorWin?.win.destroy();
     });

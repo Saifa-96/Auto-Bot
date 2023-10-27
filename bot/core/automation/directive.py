@@ -29,6 +29,14 @@ class Directive:
 
         return True
 
+    def is_exist(self, templates: list[Template]):
+        frame = self._get_frame()
+        for t in templates:
+            area = self.detector.match(frame, t.image, t.threshold)
+            if len(area) > 0:
+                return True
+        return False
+
     def single_click(self, template: Template) -> bool:
         frame = self._get_frame()
         index = template.index or 0
