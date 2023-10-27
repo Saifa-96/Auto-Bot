@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 from dataclasses_json import DataClassJsonMixin
-from ..declaration import Template
+from ..declaration import Template, Task
 from ..automation import Directive
-from ..declaration import Task
 from .abc_processor import Processor
 
 

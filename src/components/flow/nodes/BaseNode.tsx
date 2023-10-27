@@ -1,4 +1,10 @@
-import { FC, PropsWithChildren, useCallback, useMemo } from "react";
+import {
+  CSSProperties,
+  FC,
+  PropsWithChildren,
+  useCallback,
+  useMemo,
+} from "react";
 import {
   Handle,
   HandleProps,
@@ -14,26 +20,28 @@ import { styled } from "styled-components";
 interface BaseNodeProps {
   background: string;
   selected: boolean;
+  style?: CSSProperties;
 }
 
 export const BaseNode: FC<PropsWithChildren<BaseNodeProps>> = (props) => {
-  const { children, background, selected } = props;
+  const { children, background, selected, style } = props;
   return (
-    <NodeItem selected={selected} style={{ background }}>
+    <NodeItem selected={selected} style={{ background, ...style }}>
       {children}
     </NodeItem>
   );
 };
 
 const NodeItem = styled.div<{ selected?: boolean }>`
-  width: 120px;
-  height: 40px;
+  min-width: 120px;
+  min-height: 40px;
   font-weight: 600;
   font-size: small;
   border: 2px solid ${(props) => (props.selected ? "white" : "transparent")};
   border-radius: 10px;
   color: white;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
@@ -42,6 +50,7 @@ interface CustomHandleProps extends Omit<HandleProps, "position"> {
   pos: "left" | "right" | "bottom" | "custom";
   color: string;
   selected: boolean;
+  style?: CSSProperties
 }
 
 const selector =

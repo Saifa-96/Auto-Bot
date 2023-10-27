@@ -3,4 +3,4 @@
 
  poetry run pyinstaller main.py --name bot   
 
- --config=/Users/saifa_96/Documents/test.json --flow=2337e1ba-a3cf-4333-90cc-add41a34767e --area=65,142,322,592
+ --config=/Users/saifa_96/Documents/test.json,--flow=de6d6382-47ee-4f28-82a7-bfeaf992e37e,--area=0,189,246,457

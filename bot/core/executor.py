@@ -21,12 +21,6 @@ class AutoGuiExecutor:
         self.is_running = False
         self._delay = 0.3
         self.region = region
-        # self._monitor = {
-        #     "left": int(region.x),
-        #     "top": int(region.y),
-        #     "width": int(region.w),
-        #     "height": int(region.h),
-        # }
         self.processor_dict = cvt_tasks_to_processor_dict(tasks)
         self.monitor = Monitor(region)
 
@@ -50,13 +44,16 @@ class AutoGuiExecutor:
 
         self.listener = keyboard.Listener(on_press=on_key_press)
         self.listener.start()
-    
+
     def _exec(self, task_id: str):
         def execute_flow(get_frame):
-            # tracemalloc.start()            
+            # tracemalloc.start()
             directive = Directive(
                 get_frame=get_frame,
-                offset=(self.monitor.monitor_area["left"], self.monitor.monitor_area["top"]),
+                offset=(
+                    self.monitor.monitor_area["left"],
+                    self.monitor.monitor_area["top"],
+                ),
                 threshold=0.8,
             )
 
@@ -77,8 +74,6 @@ class AutoGuiExecutor:
                     current_processor = None
 
         self.monitor.start(execute_flow)
-    
-
 
     # def _exec(self, task_id: str):
     #     # tracemalloc.start()
