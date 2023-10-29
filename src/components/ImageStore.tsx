@@ -2,31 +2,12 @@ import { Flex, Box, Button } from "@radix-ui/themes";
 import { useImages } from "../store";
 import { ImageShowcase } from "./ImageShowcase";
 import { ScreenshotButton } from ".";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 export const ImageStore = () => {
   const { images, removeImages } = useImages();
   const [indices, setIndices] = useState<number[]>([]);
   const [multiple, setIsMultiple] = useState<boolean>(false);
-
-  useEffect(() => {
-    let pw = "";
-    const open = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
-        if (pw === "zxcvv") {
-          window.debug.openDevTools();
-        }
-        pw = "";
-        return;
-      }
-      pw += e.key;
-    };
-    window.addEventListener("keydown", open);
-
-    return () => {
-      window.removeEventListener("keydown", open);
-    };
-  }, []);
 
   const disabledIndices = useMemo(() => {
     return images.reduce<number[]>((arr, img, index) => {

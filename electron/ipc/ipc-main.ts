@@ -118,7 +118,7 @@ export function initIpcMain() {
   );
 
   // open dev tools
-  ipcMain.on(EVENT_NAME.OPEN_DEV_MODE, (_event) => {
-    winMgr.mainWin?.win.webContents.openDevTools();
+  ipcMain.on(EVENT_NAME.OPEN_DEV_MODE, (event) => {
+    event.sender.openDevTools();
   });
 }
