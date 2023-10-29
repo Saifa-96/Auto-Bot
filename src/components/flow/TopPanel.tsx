@@ -41,16 +41,19 @@ export const TopPanel: FC = () => {
       <Panel position="top-left">
         <FlowNameInput defaultValue={flow.name} onChange={onSave} />
       </Panel>
+
       <Panel position="top-right">
         <Button
           size="1"
           mr="3"
           color="orange"
           disabled={executing}
+          style={{ background: executing ? "#ccc" : "" }}
           onClick={handleTurnOnBot}
         >
           Execute
         </Button>
+
         <Button color="cyan" size="1" onClick={() => onSave()}>
           Save
         </Button>
