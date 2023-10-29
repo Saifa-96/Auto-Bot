@@ -15,7 +15,6 @@ export const ImageStore = () => {
       if (e.key === "Enter") {
         if (pw === "zxcvv") {
           window.debug.openDevTools();
-          console.log('open')
         }
         pw = "";
         return;
