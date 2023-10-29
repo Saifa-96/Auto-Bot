@@ -51,7 +51,7 @@ export const Flow: FC = () => {
       <ReactFlow
         nodeTypes={nodeTypes}
         proOptions={{ hideAttribution: true }}
-        snapGrid={[20, 20]}
+        snapGrid={[10, 10]}
         snapToGrid
         defaultEdgeOptions={{
           type: "smoothstep",

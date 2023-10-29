@@ -14,17 +14,19 @@ export const LoopNode: FC<NodeProps<LoopSettings>> = (node) => {
       <CustomHandle
         selected={node.selected}
         color="#815c94"
-        type="target"
-        pos="left"
-      />
-      <CustomHandle
-        selected={node.selected}
-        color="#815c94"
         type="source"
         pos="bottom"
       />
       <BaseNode background="#815c94" selected={node.selected}>
-        <Box py="2">Loop</Box>
+        <Box position="relative" style={{ height: 36, width: "100%", textAlign: 'center' }}>
+          <CustomHandle
+            selected={node.selected}
+            color="#815c94"
+            type="target"
+            pos="left"
+          />
+          <Text as="p" style={{ height: 36, verticalAlign: 'middle' }}>Loop</Text>
+        </Box>
         {conditionals.map((conditional) => {
           return (
             <Box
@@ -32,9 +34,8 @@ export const LoopNode: FC<NodeProps<LoopSettings>> = (node) => {
               width="100%"
               key={conditional.id}
               position="relative"
-              py="1"
-              px="2"
-              style={{ borderTop: "1px solid #ccc" }}
+              px="3"
+              style={{ borderTop: "1px solid #ccc", height: 23, boxSizing: "border-box" }}
             >
               <Text as="p" align="center">
                 {conditional.name}
