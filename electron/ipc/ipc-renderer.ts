@@ -22,6 +22,9 @@ export const ipcRendererContext = {
       ipcRenderer.on(EVENT_NAME.DEBUG_CONSOLE, log);
       return () => ipcRenderer.off(EVENT_NAME.DEBUG_CONSOLE, log);
     },
+    openDevTools: () => {
+      ipcRenderer.send(EVENT_NAME.OPEN_DEV_MODE)
+    }
   },
   screenshot: {
     takeScreenshot() {

@@ -117,4 +117,9 @@ export function initIpcMain() {
       mainWin?.center();
     }
   );
+
+  // open dev tools
+  ipcMain.on(EVENT_NAME.OPEN_DEV_MODE, (_event) => {
+    winMgr.mainWin?.win.webContents.openDevTools();
+  });
 }
