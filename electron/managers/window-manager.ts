@@ -21,8 +21,6 @@ class WindowManager {
     });
 
     loadWin(this.mainWin.win);
-
-    this.mainWin.win.webContents.openDevTools();
     return this.mainWin;
   }
 
