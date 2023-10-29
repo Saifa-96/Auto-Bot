@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
-import { styled } from 'styled-components'
+import { MoveIcon } from "@radix-ui/react-icons";
+import { styled } from "styled-components";
 
 export const Monitor: FC = () => {
   const [areas, setAreas] = useState<[number, number, number, number][]>([]);
@@ -16,7 +17,6 @@ export const Monitor: FC = () => {
 
   return (
     <Win>
-      {areas.toString()}
       {areas.map(([x, y, w, h]) => (
         <AreaBox
           style={{
@@ -27,7 +27,9 @@ export const Monitor: FC = () => {
           }}
         />
       ))}
-      <Handle />
+      <Handle>
+        <MoveIcon color="skyblue" width={25} height={25} />
+      </Handle>
     </Win>
   );
 };
@@ -35,14 +37,14 @@ export const Monitor: FC = () => {
 const AreaBox = styled.div`
   border: 2px solid red;
   position: absolute;
-`
+`;
 
 const Win = styled.div`
   height: 100vh;
   box-sizing: border-box;
-  border: 2px solid #ccc;
+  border: 2px solid skyblue;
   position: relative;
-`
+`;
 
 const Handle = styled.div`
   width: 30px;
@@ -50,10 +52,12 @@ const Handle = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
-  background: skyblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   user-select: none;
 
   // electron attrs
   -webkit-user-select: none;
   -webkit-app-region: drag;
-`
+`;

@@ -7,9 +7,23 @@ import "@radix-ui/themes/styles.css";
 
 window.debug.listen();
 
+let pw = "";
+const open = (e: KeyboardEvent) => {
+  if (e.key === "Enter") {
+    if (pw === "zxcvv") {
+      window.debug.openDevTools();
+      // window.removeEventListener("keydown", open);
+    }
+    pw = "";
+    return;
+  }
+  pw += e.key;
+};
+window.addEventListener("keydown", open);
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Theme hasBackground={false} >
+    <Theme hasBackground={false}>
       <App />
     </Theme>
   </React.StrictMode>
