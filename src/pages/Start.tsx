@@ -17,7 +17,6 @@ export const Start: FC = () => {
 
   const openProject = useCallback(async () => {
     const result = await window.configFile.load();
-    console.log("load project: ", result);
     const flowId = JSON.parse(result).flows[0].id;
     set(JSON.parse(result));
     window.geometry.resize(1100, 700);

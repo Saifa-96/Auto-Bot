@@ -71,7 +71,6 @@ function loadWin(win: BrowserWindow, pathName?: string) {
   const devPath = pathName ? `#/${pathName}` : "";
 
   if (VITE_DEV_SERVER_URL) {
-    console.log("vite dev server url: ", VITE_DEV_SERVER_URL + devPath);
     win.loadURL(VITE_DEV_SERVER_URL + devPath);
   } else {
     // win.loadFile('dist/index.html')

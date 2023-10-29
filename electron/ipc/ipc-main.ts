@@ -40,7 +40,6 @@ export function initIpcMain() {
       region: bounds,
       stdout: (data) => {
         const areas = JSON.parse(data.toString());
-        console.log("matched areas: ", areas);
         winMgr?.monitorWin?.win.webContents.send(
           EVENT_NAME.DRAW_MATCHED_REGION,
           areas

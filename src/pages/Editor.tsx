@@ -31,7 +31,6 @@ export const Editor: FC = () => {
   const onValueChange = useCallback(
     (isShowMonitor: boolean) => {
       if (isShowMonitor) {
-        console.log("monitor area: ", region);
         window.monitor.open(region);
       } else {
         window.monitor.close();

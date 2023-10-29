@@ -87,7 +87,6 @@ export const TemplatesInput: FC<TemplatesInputProps> = (props) => {
   const addedImage = useCallback(
     (imageData: ImageData) => {
       const { id } = imageData;
-      console.log("image id:", id);
       onChange([...value, { imageId: id }]);
     },
     [value]
@@ -96,7 +95,6 @@ export const TemplatesInput: FC<TemplatesInputProps> = (props) => {
   const onThresholdChange = useCallback(
     (index: number, v: number) => {
       const newValue = [...value];
-      console.log("threshold changed:", value, newValue);
       newValue[index] = { ...value[index], threshold: v };
       onChange(newValue);
     },
