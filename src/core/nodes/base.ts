@@ -34,3 +34,8 @@ export const isOrConditional = (
 ): conditional is OrConditional => {
   return "conditionals" in conditional;
 };
+
+export interface SettingsHandler<T> {
+  new: () => T;
+  getUsedImages(settings: T): string[];
+}

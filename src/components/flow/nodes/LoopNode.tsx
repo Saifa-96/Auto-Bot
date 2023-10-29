@@ -1,9 +1,8 @@
 import { FC } from "react";
 import { type NodeProps } from "reactflow";
-import { styled } from "styled-components";
 import { BaseNode, CustomHandle } from "./BaseNode";
 import { LoopSettings } from "../../../core/nodes/loop";
-import { Box, Inset, Separator, Text } from "@radix-ui/themes";
+import { Box, Text } from "@radix-ui/themes";
 
 export const LoopNode: FC<NodeProps<LoopSettings>> = (node) => {
   const {

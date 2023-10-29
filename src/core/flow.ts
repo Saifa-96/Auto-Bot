@@ -1,6 +1,7 @@
 import type { Node, Edge, Viewport } from "reactflow";
-import { NODE_TYPE, createNodeByType } from "./nodes";
+import { NODE_TYPE } from "./nodes";
 import { v4 as uuid } from "uuid";
+import { createNodeByType } from "./manager";
 
 export interface FlowData {
   id: string;

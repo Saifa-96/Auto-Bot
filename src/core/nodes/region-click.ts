@@ -1,15 +1,11 @@
-import { TemplateItem } from "./base";
+import { SettingsHandler, TemplateItem } from "./base";
 
 export interface RegionClickSettings {
   region: TemplateItem;
   target: TemplateItem;
 }
 
-export function initRegionClickSettings(): RegionClickSettings {
-  return { region: { imageId: null }, target: { imageId: null } };
-}
-
-export function getUsedImages(data: RegionClickSettings): string[] {
+function getUsedImages(data: RegionClickSettings): string[] {
   const { region, target } = data;
   const imageIds = [];
   if (region.imageId) {
@@ -21,3 +17,9 @@ export function getUsedImages(data: RegionClickSettings): string[] {
   }
   return imageIds;
 }
+
+export const RegionClickSettingsHandler: SettingsHandler<RegionClickSettings> =
+  {
+    new: () => ({ region: { imageId: null }, target: { imageId: null } }),
+    getUsedImages,
+  };
