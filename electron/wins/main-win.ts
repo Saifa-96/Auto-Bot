@@ -13,7 +13,7 @@ export class MainWin {
       },
       width: 200,
       height: 118,
-      resizable: false
+      resizable: false,
     };
 
     this.win = new BrowserWindow(options)
