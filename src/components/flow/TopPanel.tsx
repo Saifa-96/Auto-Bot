@@ -39,18 +39,11 @@ export const TopPanel: FC = () => {
   const [executing, setExecuteState] = useState<boolean>(false);
 
   const handleTurnOnBot = useCallback(async () => {
-    const result = await window.monitor.isShow();
-    if (!result) {
-      toast.error("Please, Turn on the monitor before executing the bot.");
-      return;
-    }
-
     const state = sessionStorage.getItem("editing-state");
-    if (state === "true") {
+    if (state === 'true') {
       toast.error("Please, save the config file before executing the bot.");
-      return;
+      return
     }
-
     setExecuteState(true);
     await window.bot.turnOn(flow.id);
     setExecuteState(false);

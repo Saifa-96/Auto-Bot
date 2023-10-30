@@ -11,8 +11,8 @@ interface Region {
 export const ipcRendererContext = {
   geometry: {
     resize: (w: number, h: number) => {
-      ipcRenderer.send(EVENT_NAME.CHANGE_GEOMETRY, w, h);
-    },
+      ipcRenderer.send(EVENT_NAME.CHANGE_GEOMETRY, w, h)
+    }
   },
   debug: {
     listen: () => {
@@ -23,8 +23,8 @@ export const ipcRendererContext = {
       return () => ipcRenderer.off(EVENT_NAME.DEBUG_CONSOLE, log);
     },
     openDevTools: () => {
-      ipcRenderer.send(EVENT_NAME.OPEN_DEV_MODE);
-    },
+      ipcRenderer.send(EVENT_NAME.OPEN_DEV_MODE)
+    }
   },
   screenshot: {
     takeScreenshot() {
@@ -47,9 +47,6 @@ export const ipcRendererContext = {
     },
   },
   monitor: {
-    isShow() {
-      return ipcRenderer.invoke(EVENT_NAME.CHECK_MONITOR_SHOW);
-    },
     open(region: Region) {
       ipcRenderer.send(EVENT_NAME.TOGGLE_MONITOR_VISIBLE, region);
     },
