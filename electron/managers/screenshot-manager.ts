@@ -1,7 +1,7 @@
 import {
   screen,
   desktopCapturer,
-  systemPreferences,
+  // systemPreferences,
   type Rectangle,
   type NativeImage,
 } from "electron";
@@ -14,7 +14,7 @@ class ScreenshotManager {
     this._scaleFactor = null;
   }
 
-  checkScreenPreferences = checkScreenPreferences;
+  // checkScreenPreferences = checkScreenPreferences;
 
   async capture(): Promise<string> {
     const { image, scaleFactor } = await captureScreen();
@@ -34,10 +34,10 @@ class ScreenshotManager {
   }
 }
 
-const checkScreenPreferences = () => {
-  const status = systemPreferences.getMediaAccessStatus("screen");
-  return status === "granted";
-};
+// const checkScreenPreferences = () => {
+//   const status = systemPreferences.getMediaAccessStatus("screen");
+//   return status === "granted";
+// };
 
 const captureScreen = async () => {
   // Get the primary display

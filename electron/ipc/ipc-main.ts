@@ -1,7 +1,6 @@
-import { Rectangle, ipcMain, nativeImage, systemPreferences } from "electron";
-import { winMgr, fileMgr, botMgr, sctMgr } from "../managers";
+import { Rectangle, ipcMain, nativeImage } from "electron";
+import { winMgr, fileMgr, botMgr, sctMgr, permissionsMgr } from "../managers";
 import * as EVENT_NAME from "./event-names";
-import { debugLog } from "../utils";
 
 interface Region {
   x: number;
@@ -32,8 +31,7 @@ export function initIpcMain() {
     const bounds = winMgr.monitorWin?.win.getBounds();
     if (!bounds) return;
 
-    const result = systemPreferences.isTrustedAccessibilityClient(true);
-    debugLog("isTrustedAccessibilityClient: " + result);
+    const result = permissionsMgr.checkAccessibility();
     if (!result) return;
 
     const image = nativeImage.createFromDataURL(imageURL);
@@ -59,8 +57,7 @@ export function initIpcMain() {
     const bounds = winMgr?.monitorWin?.win.getBounds();
     if (!bounds) return Promise.resolve(false);
 
-    const result = systemPreferences.isTrustedAccessibilityClient(true);
-    debugLog("isTrustedAccessibilityClient: " + result);
+    const result = permissionsMgr.checkAccessibility();
     if (!result) return;
 
     return new Promise((resolve) => {
@@ -89,7 +86,7 @@ export function initIpcMain() {
   // Take screenshot
   ipcMain.on(EVENT_NAME.TAKE_SCREENSHOT, async () => {
     // check system preferences
-    const result = sctMgr.checkScreenPreferences();
+    const result = permissionsMgr.checkScreenPreferences();
 
     if (!result) {
       // TODO show notice to request users open screen permissions
