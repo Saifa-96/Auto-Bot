@@ -26,6 +26,11 @@ export function initIpcMain() {
     }
   });
 
+  // Is the monitor window showing
+  ipcMain.handle(EVENT_NAME.CHECK_MONITOR_SHOW, () => {
+    return winMgr.isMonitorShowing();
+  });
+
   // Matching a given image template and showing the matched area on the monitor window
   ipcMain.on(EVENT_NAME.MATCH_TEMPLATE, (_event, imageURL: string) => {
     const bounds = winMgr.monitorWin?.win.getBounds();
@@ -62,11 +67,14 @@ export function initIpcMain() {
       const result = permissionsMgr.checkAccessibility();
       if (!result) return Promise.resolve(false);
 
+      const configFilePath = fileMgr.getConfigFilePath();
+      if (!configFilePath) return Promise.resolve(false);
+
       return new Promise((resolve) => {
         winMgr.monitorWin?.ignoreMouse(true);
         botMgr.execBotForAutoGui({
           flowId,
-          configFilePath: fileMgr.getConfigFilePath(),
+          configFilePath,
           region: {
             x: bounds.x,
             y: bounds.y,
