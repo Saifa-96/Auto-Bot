@@ -1,6 +1,7 @@
-import { Rectangle, ipcMain, nativeImage } from "electron";
+import { Rectangle, ipcMain, nativeImage, systemPreferences } from "electron";
 import { winMgr, fileMgr, botMgr, sctMgr } from "../managers";
 import * as EVENT_NAME from "./event-names";
+import { debugLog } from "../utils";
 
 interface Region {
   x: number;
@@ -31,6 +32,10 @@ export function initIpcMain() {
     const bounds = winMgr.monitorWin?.win.getBounds();
     if (!bounds) return;
 
+    const result = systemPreferences.isTrustedAccessibilityClient(true);
+    debugLog("isTrustedAccessibilityClient: " + result);
+    if (!result) return;
+
     const image = nativeImage.createFromDataURL(imageURL);
     const png = image.toPNG();
     const { removeFile, dir } = fileMgr.saveAsTemporaryFile(png, "png");
@@ -53,6 +58,10 @@ export function initIpcMain() {
   ipcMain.handle(EVENT_NAME.TURN_ON_BOT, (_event, flowId: string) => {
     const bounds = winMgr?.monitorWin?.win.getBounds();
     if (!bounds) return Promise.resolve(false);
+
+    const result = systemPreferences.isTrustedAccessibilityClient(true);
+    debugLog("isTrustedAccessibilityClient: " + result);
+    if (!result) return;
 
     return new Promise((resolve) => {
       winMgr.monitorWin?.ignoreMouse(true);
