@@ -8,7 +8,6 @@ import {
   Kbd,
   Text,
 } from "@radix-ui/themes";
-import { toast } from "react-toastify";
 import { Cross2Icon, CheckIcon } from "@radix-ui/react-icons";
 import { Panel, ReactFlowJsonObject, useReactFlow } from "reactflow";
 import { useFlow } from "../../store";
@@ -39,11 +38,6 @@ export const TopPanel: FC = () => {
   const [executing, setExecuteState] = useState<boolean>(false);
 
   const handleTurnOnBot = useCallback(async () => {
-    const state = sessionStorage.getItem("editing-state");
-    if (state === 'true') {
-      toast.error("Please, save the config file before executing the bot.");
-      return
-    }
     setExecuteState(true);
     await window.bot.turnOn(flow.id);
     setExecuteState(false);
