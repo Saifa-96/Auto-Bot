@@ -13,35 +13,66 @@ interface TemplateInputProps {
 }
 
 export const TemplateInput: FC<TemplateInputProps> = (props) => {
-  const { value, onChange } = props;
+  const {
+    value: { imageId, threshold = 0.7 },
+    onChange,
+  } = props;
+  const { imageURL, addImage } = useImageURL(imageId);
 
-  const onValueChange = useCallback<(v: number) => void>(
-    debounce((v: number) => {
-      onChange({ imageId: value.imageId, threshold: v });
+  const takeScreenshot = useCallback(async () => {
+    const imageURL = await window.screenshot.takeScreenshot();
+    const { id } = addImage(imageURL);
+    onChange({ imageId: id, threshold });
+  }, [onChange]);
+
+  const onValueChange = useCallback<(v: number[]) => void>(
+    debounce((v: number[]) => {
+      onChange({ imageId, threshold: v[0] });
     }, 150),
-    [value, onChange]
+    [onChange]
   );
 
   const onDelete = useCallback(() => {
     onChange({ imageId: null });
   }, [onChange]);
 
-  if (!value.imageId) {
+  const onDetect = useCallback(() => {
+    // window.screenshot.detectImage(imageURL!);
+    window.monitor.matchTemplate(imageURL);
+  }, [imageURL]);
+
+  if (!imageURL) {
     return (
       <Box my="2">
-        <ScreenshotButton
-          onAddImage={(imageData) => onChange({ imageId: imageData.id })}
-        />
+        <Button onClick={takeScreenshot}>Screenshot</Button>
       </Box>
     );
   }
 
   return (
-    <ImageCard
-      data={value}
-      onThresholdChange={onValueChange}
-      onDelete={onDelete}
-    />
+    <Card my="2">
+      <Flex>
+        <Image src={imageURL} />
+
+        <Box ml="2" grow="1">
+          <Text size="2">Threshold: {threshold}</Text>
+          <Slider
+            mt="2"
+            max={0.9}
+            min={0.1}
+            step={0.01}
+            defaultValue={[threshold]}
+            onValueChange={onValueChange}
+          />
+        </Box>
+      </Flex>
+      <Flex mt="2" gap="2" direction="row-reverse">
+        <Button color="red" onClick={onDelete}>
+          Delete
+        </Button>
+        <Button onClick={onDetect}>Detect</Button>
+      </Flex>
+    </Card>
   );
 };
 
