@@ -14,6 +14,8 @@ class ScreenshotManager {
     this._scaleFactor = null;
   }
 
+  // checkScreenPreferences = checkScreenPreferences;
+
   async capture(): Promise<string> {
     const { image, scaleFactor } = await captureScreen();
     this._image = image;
@@ -31,6 +33,11 @@ class ScreenshotManager {
     return croppedImage.toDataURL();
   }
 }
+
+// const checkScreenPreferences = () => {
+//   const status = systemPreferences.getMediaAccessStatus("screen");
+//   return status === "granted";
+// };
 
 const captureScreen = async () => {
   // Get the primary display
