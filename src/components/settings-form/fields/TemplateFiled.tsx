@@ -1,6 +1,7 @@
 import { FC, ReactEventHandler, useCallback, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { Button, Card, Flex, Text, Slider, Box } from "@radix-ui/themes";
+import { toast } from "react-toastify";
 import { debounce } from "lodash";
 import { ImageData, TemplateItem } from "../../../core";
 import { useImageURL } from "../../../store";
@@ -133,9 +134,15 @@ const ImageCard: FC<ImageCardProps> = (props) => {
     }
   }, []);
 
-  const onDetect = useCallback(() => {
-    // window.screenshot.detectImage(imageURL!);
-    window.monitor.matchTemplate(imageURL);
+  const onDetect = useCallback(async () => {
+    const result = await window.monitor.isShow();
+    if (result) {
+      window.monitor.matchTemplate(imageURL);
+    } else {
+      toast.warning(
+        "Please, open the monitor before detecting the target template."
+      );
+    }
   }, [imageURL]);
 
   const onValueChange = useCallback(

@@ -30,7 +30,7 @@ export const TopPanel: FC = () => {
       },
       async (state) => {
         console.log("save data: ", state);
-        window.configFile.save(JSON.stringify(state));
+        await window.configFile.save(JSON.stringify(state));
         sessionStorage.setItem("editing-state", "false");
         toast.success('Successfully saved', { autoClose: 1000 })
       }
