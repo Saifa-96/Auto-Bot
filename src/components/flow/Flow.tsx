@@ -23,6 +23,8 @@ import ReactFlow, {
   Node,
   ReactFlowProps,
 } from "reactflow";
+import { ToastContainer } from "react-toastify";
+
 import { mergeProps } from "@react-aria/utils";
 import { nodeTypes } from "./nodes";
 import { useFlow } from "../../store";
@@ -61,6 +63,10 @@ export const Flow: FC = () => {
         {...flowProps}
       >
         <Background />
+        <ToastContainer
+          style={{ position: "absolute" }}
+          position="bottom-right"
+        />
         <Controls />
         <TopPanel />
       </ReactFlow>

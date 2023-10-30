@@ -4,6 +4,7 @@ import { Theme } from "@radix-ui/themes";
 import App from "./App.tsx";
 import "./index.css";
 import "@radix-ui/themes/styles.css";
+import "react-toastify/dist/ReactToastify.css";
 
 window.debug.listen();
 
