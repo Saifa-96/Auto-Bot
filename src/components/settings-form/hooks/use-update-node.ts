@@ -11,9 +11,7 @@ export const useUpdateNode = <T>() => {
       instance.setNodes((nodes) =>
         nodes.map((nd) => {
           if (nd.id !== node.id) return nd;
-          return produce(nd, (draft) => {
-            draft.data = node.data;
-          });
+          return node;
         })
       );
       updateNodeInternals(node.id);
