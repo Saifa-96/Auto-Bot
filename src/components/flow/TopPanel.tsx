@@ -1,6 +1,13 @@
 import { FC, useCallback, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Flex, Button, TextFieldInput, IconButton } from "@radix-ui/themes";
+import {
+  Flex,
+  Button,
+  TextFieldInput,
+  IconButton,
+  Kbd,
+  Text,
+} from "@radix-ui/themes";
 import { Cross2Icon, CheckIcon } from "@radix-ui/react-icons";
 import { Panel, ReactFlowJsonObject, useReactFlow } from "reactflow";
 import { useFlow } from "../../store";
@@ -43,20 +50,20 @@ export const TopPanel: FC = () => {
       </Panel>
 
       <Panel position="top-right">
-        <Button
-          size="1"
-          mr="3"
-          color="orange"
-          disabled={executing}
-          style={{ background: executing ? "#ccc" : "" }}
-          onClick={handleTurnOnBot}
-        >
-          Execute
-        </Button>
-
-        <Button color="cyan" size="1" onClick={() => onSave()}>
-          Save
-        </Button>
+        <Flex gap="3">
+          {executing ? (
+            <Text style={{ color: "white" }}>
+              Press <Kbd>F1</Kbd> for stopping the bot process
+            </Text>
+          ) : (
+            <Button size="1" color="orange" onClick={handleTurnOnBot}>
+              Execute
+            </Button>
+          )}
+          <Button color="cyan" size="1" onClick={() => onSave()}>
+            Save
+          </Button>
+        </Flex>
       </Panel>
     </>
   );
