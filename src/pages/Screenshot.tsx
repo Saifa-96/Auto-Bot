@@ -36,7 +36,13 @@ export const Screenshot: FC = () => {
     if (!startPoint.current) return;
 
     const ctx = canvasDom.current?.getContext("2d");
-    if (!ctx) return;
+    if (!ctx || !canvasDom.current) return;
+
+    ctx.clearRect(0, 0, canvasDom.current.width, canvasDom.current.height);
+
+    const { innerWidth, innerHeight } = window;
+    ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+    ctx.fillRect(0, 0, innerWidth, innerHeight);
 
     const currentPoint: Point = { x: e.pageX, y: e.pageY };
     const rect = calcRect(startPoint.current!, currentPoint);
