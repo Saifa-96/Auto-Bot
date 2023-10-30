@@ -53,26 +53,34 @@ export function initIpcMain() {
   });
 
   // Execute auto gui bot
-  ipcMain.handle(EVENT_NAME.TURN_ON_BOT, (_event, flowId: string) => {
-    const bounds = winMgr?.monitorWin?.win.getBounds();
-    if (!bounds) return Promise.resolve(false);
+  ipcMain.handle(
+    EVENT_NAME.TURN_ON_BOT,
+    (_event, flowId: string): Promise<boolean> => {
+      const bounds = winMgr?.monitorWin?.win.getBounds();
+      if (!bounds) return Promise.resolve(false);
 
-    const result = permissionsMgr.checkAccessibility();
-    if (!result) return;
+      const result = permissionsMgr.checkAccessibility();
+      if (!result) return Promise.resolve(false);
 
-    return new Promise((resolve) => {
-      winMgr.monitorWin?.ignoreMouse(true);
-      botMgr.execBotForAutoGui({
-        flowId,
-        configFilePath: fileMgr.getConfigFilePath(),
-        region: { x: bounds.x, y: bounds.y, w: bounds.width, h: bounds.height },
-        close: () => {
-          winMgr.monitorWin?.ignoreMouse(false);
-          resolve(true);
-        },
+      return new Promise((resolve) => {
+        winMgr.monitorWin?.ignoreMouse(true);
+        botMgr.execBotForAutoGui({
+          flowId,
+          configFilePath: fileMgr.getConfigFilePath(),
+          region: {
+            x: bounds.x,
+            y: bounds.y,
+            w: bounds.width,
+            h: bounds.height,
+          },
+          close: () => {
+            winMgr.monitorWin?.ignoreMouse(false);
+            resolve(true);
+          },
+        });
       });
-    });
-  });
+    }
+  );
 
   // Save & Load The Config File
   ipcMain.handle(EVENT_NAME.SAVE_CONFIG_FILE, (_event, contents: string) => {
