@@ -101,6 +101,8 @@ export function initIpcMain() {
 
   // Take screenshot
   ipcMain.on(EVENT_NAME.TAKE_SCREENSHOT, async () => {
+    const sctPromise = sctMgr.capture();
+
     // check system preferences
     const result = permissionsMgr.checkScreenPreferences();
 
@@ -112,7 +114,7 @@ export function initIpcMain() {
     // load screenshot window and prepare screenshot image url
     const sctWin = winMgr.createScreenshotWin();
     const [imageURL] = await Promise.all([
-      sctMgr.capture(),
+      sctPromise,
       winMgr.waitWinLoad(sctWin.win),
     ]);
     sctWin.win.webContents.send(EVENT_NAME.CAPTURED_SCREENSHOT, imageURL);
