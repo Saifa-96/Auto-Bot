@@ -52,11 +52,5 @@
     "vite-plugin-electron": "^0.14.0",
     "vite-plugin-electron-renderer": "^0.14.5"
   },
-  "main": "dist-electron/main.js",
-  "lint-staged": {
-    "*.ts": [
-      "prettier --list-different",
-      "eslint"
-    ]
-  }
+  "main": "dist-electron/main.js"
 }
