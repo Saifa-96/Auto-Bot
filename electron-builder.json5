@@ -10,8 +10,8 @@
     "output": "release/${version}"
   },
   "extraResources":  {
-    "from": "./extra-resources/",
-    "to": "extra-resources"
+    "from": "./extra/",
+    "to": "extra"
   },
   "files": [
     "dist",
