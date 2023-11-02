@@ -14,5 +14,5 @@ export function publicSource(fileName: string) {
 }
 
 export function extraResources(fileName: string) {
-  return path.join(app.getAppPath(), '../extra-resources', fileName)
+  return path.join(app.getAppPath(), '../extra', fileName)
 }
