@@ -7,7 +7,7 @@ const useStore = create(
   persist(immer(createStore), {
     name: "flow-store", // name of the item in the storage (must be unique)
     storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
-  })
+  }),
 );
 
-export default useStore
+export default useStore;
