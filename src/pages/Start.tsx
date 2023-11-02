@@ -12,7 +12,7 @@ export const Start: FC = () => {
     const flowId = init();
     window.geometry.resize(1100, 700);
     setTimeout(() => navigate(`/editor/flow/${flowId}`), 0);
-  }, []);
+  }, [init, navigate]);
 
   const openProject = useCallback(async () => {
     const result = await window.configFile.load();
@@ -20,7 +20,7 @@ export const Start: FC = () => {
     set(JSON.parse(result));
     window.geometry.resize(1100, 700);
     setTimeout(() => navigate(`/editor/flow/${flowId}`), 0);
-  }, []);
+  }, [navigate, set]);
 
   return (
     <Box asChild p="2">
