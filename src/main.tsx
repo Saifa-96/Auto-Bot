@@ -27,7 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Theme hasBackground={false}>
       <App />
     </Theme>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // Remove Preload scripts loading

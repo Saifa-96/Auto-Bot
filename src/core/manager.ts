@@ -25,7 +25,7 @@ export const getImages = {
 
 export function createNodeByType(
   type: NODE_TYPE,
-  position: XYPosition = { x: 0, y: 0 }
+  position: XYPosition = { x: 0, y: 0 },
 ): Node {
   const data = dataFactorMap[type]();
   return createNode({ type, data, position });

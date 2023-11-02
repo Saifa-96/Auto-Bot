@@ -30,7 +30,7 @@ export interface OrConditional {
 export type Conditionals = (Conditional | OrConditional)[];
 
 export const isOrConditional = (
-  conditional: Conditional | OrConditional
+  conditional: Conditional | OrConditional,
 ): conditional is OrConditional => {
   return "conditionals" in conditional;
 };
