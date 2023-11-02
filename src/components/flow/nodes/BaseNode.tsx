@@ -50,7 +50,7 @@ interface CustomHandleProps extends Omit<HandleProps, "position"> {
   pos: "left" | "right" | "bottom" | "custom";
   color: string;
   selected: boolean;
-  style?: CSSProperties
+  style?: CSSProperties;
 }
 
 const selector =
@@ -58,7 +58,7 @@ const selector =
     nodeId: string,
     handleType: HandleType,
     isConnectable = true,
-    handleId?: string
+    handleId?: string,
   ) =>
   (s: ReactFlowState) => {
     // If the user props say this handle is not connectable, we don't need to
@@ -71,15 +71,15 @@ const selector =
     if (handleId) {
       const edgesConnectedWithHandleId = connectedEdges.filter(
         ({ sourceHandle, targetHandle }) =>
-          sourceHandle === handleId || targetHandle === handleId
+          sourceHandle === handleId || targetHandle === handleId,
       );
       return edgesConnectedWithHandleId.length < 1;
     }
 
-    let filteredEdges = connectedEdges.filter(
+    const filteredEdges = connectedEdges.filter(
       handleType === "source"
         ? (edge) => edge.source === nodeId
-        : (edge) => edge.target === nodeId
+        : (edge) => edge.target === nodeId,
     );
 
     return filteredEdges.length < 1;
@@ -90,10 +90,11 @@ export const CustomHandle: FC<CustomHandleProps> = (props) => {
 
   const nodeId = useNodeId()!;
   const isConnectable = useStore(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useCallback(selector(nodeId, type, props.isConnectable, id), [
       nodeId,
       props.isConnectable,
-    ])
+    ]),
   );
 
   const pos_attr = useMemo(() => {

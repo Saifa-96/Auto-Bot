@@ -7,7 +7,7 @@ import { TemplateInput } from "./fields/TemplateFiled";
 import { useUpdateNode } from "./hooks";
 
 export const RegionClickSettingsForm: FC<Node<RegionClickSettings>> = (
-  node
+  node,
 ) => {
   const { data } = node;
   const { region, target } = data;
@@ -20,7 +20,7 @@ export const RegionClickSettingsForm: FC<Node<RegionClickSettings>> = (
       });
       update(newNode);
     },
-    [node]
+    [node, produce, update],
   );
 
   return (

@@ -12,7 +12,7 @@ export const MatchClickSettingsForm: FC<Node<MatchClickSettings>> = (node) => {
   } = node;
 
   const { update, produce } = useUpdateNode<MatchClickSettings>();
-  
+
   const updateTargets = useCallback(
     (v: TemplateItem[]) => {
       const newNode = produce(node, (draft) => {
@@ -20,7 +20,7 @@ export const MatchClickSettingsForm: FC<Node<MatchClickSettings>> = (node) => {
       });
       update(newNode);
     },
-    [update, node]
+    [produce, node, update],
   );
 
   return (

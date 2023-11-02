@@ -42,7 +42,7 @@ export const Flow: FC = () => {
   useEffect(() => {
     const { nodes, edges } = flow;
     setFlow(nodes, edges);
-  }, [flowId]);
+  }, [flow, flowId, setFlow]);
 
   const flowProps = useMemo(() => {
     return mergeProps(reactflowProps, collectFlowEditingState);
@@ -95,7 +95,7 @@ const useFlowOperation = (): UseFlowOperationReturn => {
 
   const onConnect = useCallback<OnConnect>(
     (params) => setEdges((eds) => addEdge(params, eds)),
-    []
+    [],
   );
 
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
@@ -111,7 +111,7 @@ const useFlowOperation = (): UseFlowOperationReturn => {
 
       const reactFlowBounds = reactFlowWrapper.current?.getBoundingClientRect();
       const type = event.dataTransfer.getData(
-        "application/reactflow"
+        "application/reactflow",
       ) as NODE_TYPE;
 
       // check if the dropped element is valid
@@ -128,7 +128,7 @@ const useFlowOperation = (): UseFlowOperationReturn => {
       // setNodes((nds) => nds.concat(newNode));
       instance.addNodes([newNode]);
     },
-    [instance]
+    [instance],
   );
 
   const setFlow = useCallback((nodes: Node[], edges: Edge[]) => {
@@ -159,7 +159,7 @@ const useFlowEditingState = (): ReactFlowProps => {
   const onNodesChange = useCallback<OnNodesChange>((changes) => {
     if (
       changes.some(
-        (c) => c.type === "remove" || (c.type === "position" && c.dragging)
+        (c) => c.type === "remove" || (c.type === "position" && c.dragging),
       )
     ) {
       setEditingState();

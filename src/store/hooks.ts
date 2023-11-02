@@ -47,7 +47,7 @@ export const useMonitRegion = () => useStore(monitorAreaSelector);
 const imageStoreSelector = (state: Store) => ({
   flows: state.flows,
   images: state.images,
-  removeImages: state.removeImages
+  removeImages: state.removeImages,
 });
 export const useImages = () => {
   const { flows, images, removeImages } = useStore(imageStoreSelector);
@@ -75,7 +75,7 @@ export const useImages = () => {
     return images.map((i) => ({ ...i, belong: imageMap[i.id] ?? [] }));
   }, [flows, images]);
 
-  return { images: imageItems, removeImages }
+  return { images: imageItems, removeImages };
 };
 
 const imagesSelector = (state: Store) => ({
@@ -102,7 +102,7 @@ export function useImageURL(imageId: string | null | (string | null)[]) {
     }
     const imageItem = images.find((i) => i.id === imageId);
     return imageItem?.detail;
-  }, [imageId]);
+  }, [imageId, images]);
 
   return { imageURL, addImage };
 }

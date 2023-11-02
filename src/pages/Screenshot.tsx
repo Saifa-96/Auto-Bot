@@ -84,7 +84,7 @@ export const Screenshot: FC = () => {
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
     };
-  }, []);
+  }, [onMouseDown, onMouseMove, onMouseUp]);
 
   return (
     <section style={{ position: "relative", cursor: "crosshair" }}>

@@ -16,11 +16,12 @@ interface TemplateInputProps {
 export const TemplateInput: FC<TemplateInputProps> = (props) => {
   const { value, onChange } = props;
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onValueChange = useCallback<(v: number) => void>(
     debounce((v: number) => {
       onChange({ imageId: value.imageId, threshold: v });
     }, 150),
-    [value, onChange]
+    [value, onChange],
   );
 
   const onDelete = useCallback(() => {
@@ -59,7 +60,7 @@ export const TemplatesInput: FC<TemplatesInputProps> = (props) => {
       const { id } = imageData;
       onChange([...value, { imageId: id }]);
     },
-    [value]
+    [onChange, value],
   );
 
   const onThresholdChange = useCallback(
@@ -68,7 +69,7 @@ export const TemplatesInput: FC<TemplatesInputProps> = (props) => {
       newValue[index] = { ...value[index], threshold: v };
       onChange(newValue);
     },
-    [value]
+    [onChange, value],
   );
 
   const onDelete = useCallback(
@@ -78,7 +79,7 @@ export const TemplatesInput: FC<TemplatesInputProps> = (props) => {
       onChange(newValue);
       setIndex(null);
     },
-    [value]
+    [onChange, value],
   );
 
   const { imageURL: sources } = useImageURL(value.map((v) => v.imageId));
@@ -127,7 +128,7 @@ const ImageCard: FC<ImageCardProps> = (props) => {
   const imgRef = useRef<HTMLImageElement>(null);
   const [imgSizeStr, setImgSizeStr] = useState<string>("loading...");
 
-  const handleImgLoaded = useCallback<ReactEventHandler>((_event) => {
+  const handleImgLoaded = useCallback<ReactEventHandler>(() => {
     if (imgRef.current) {
       const { naturalWidth, naturalHeight } = imgRef.current;
       setImgSizeStr(`${naturalWidth} * ${naturalHeight}`);
@@ -140,7 +141,7 @@ const ImageCard: FC<ImageCardProps> = (props) => {
       window.monitor.matchTemplate(imageURL);
     } else {
       toast.warning(
-        "Please, open the monitor before detecting the target template."
+        "Please, open the monitor before detecting the target template.",
       );
     }
   }, [imageURL]);
@@ -149,7 +150,7 @@ const ImageCard: FC<ImageCardProps> = (props) => {
     (v: number[]) => {
       onThresholdChange(v[0]);
     },
-    [onThresholdChange]
+    [onThresholdChange],
   );
 
   return (

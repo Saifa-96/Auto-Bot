@@ -3,7 +3,7 @@ import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 
 export const SaveAlertDialog = forwardRef<
   { alert: () => Promise<boolean> },
-  {}
+  object
 >((_props, ref) => {
   const [open, setOpen] = useState<boolean>(false);
   const resolveFn = useRef<((v: boolean) => void) | null>(null);
@@ -16,7 +16,7 @@ export const SaveAlertDialog = forwardRef<
         return new Promise((resolve) => (resolveFn.current = resolve));
       },
     }),
-    []
+    [],
   );
 
   return (
