@@ -18,24 +18,27 @@ export const TopPanel: FC = () => {
   const { flowId } = useParams();
   const { flow, updateFlow } = useFlow(flowId!);
 
-  const onSave = useCallback((flowName?: string) => {
-    const jsonObj = instance.toObject();
-    const flowData = simplifyFlowData(jsonObj);
+  const onSave = useCallback(
+    (flowName?: string) => {
+      const jsonObj = instance.toObject();
+      const flowData = simplifyFlowData(jsonObj);
 
-    updateFlow(
-      {
-        id: flow.id,
-        name: flowName ?? flow.name,
-        ...flowData,
-      },
-      async (state) => {
-        console.log("save data: ", state);
-        await window.configFile.save(JSON.stringify(state));
-        sessionStorage.setItem("editing-state", "false");
-        toast.success('Successfully saved', { autoClose: 1000 })
-      }
-    );
-  }, []);
+      updateFlow(
+        {
+          id: flow.id,
+          name: flowName ?? flow.name,
+          ...flowData,
+        },
+        async (state) => {
+          console.log("save data: ", state);
+          await window.configFile.save(JSON.stringify(state));
+          sessionStorage.setItem("editing-state", "false");
+          toast.success("Successfully saved", { autoClose: 1000 });
+        },
+      );
+    },
+    [flow.id, flow.name, instance, updateFlow],
+  );
 
   const [executing, setExecuteState] = useState<boolean>(false);
 
@@ -96,7 +99,7 @@ const FlowNameInput: FC<FlowNameInputProps> = ({ defaultValue, onChange }) => {
     const value = inputRef.current?.value;
     setEditing(false);
     onChange(value!);
-  }, []);
+  }, [onChange]);
 
   if (editing) {
     return (

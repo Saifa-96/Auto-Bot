@@ -7,13 +7,13 @@ interface ScreenshotButtonProps {
   onAddImage?: (imageData: ImageData) => void;
 }
 
-export function useScreenshot() {
+function useScreenshot() {
   const addImage = useAddImage();
   const takeScreenshot = useCallback(async () => {
     const imageURL = await window.screenshot.takeScreenshot();
     const imageData = addImage(imageURL);
     return imageData;
-  }, []);
+  }, [addImage]);
   return takeScreenshot;
 }
 
@@ -24,7 +24,7 @@ export const ScreenshotButton: FC<ScreenshotButtonProps> = (props) => {
   const capture = useCallback(async () => {
     const imageData = await takeScreenshot();
     onAddImage?.(imageData);
-  }, [onAddImage]);
+  }, [onAddImage, takeScreenshot]);
 
   return (
     <Button size="1" onClick={capture}>

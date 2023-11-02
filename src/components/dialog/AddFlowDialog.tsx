@@ -25,7 +25,7 @@ export const AddFlowDialog = forwardRef<{ show: () => void }, AddFlowDialog>(
       () => ({
         show: () => setOpen(true),
       }),
-      []
+      [],
     );
 
     useEffect(() => {
@@ -36,7 +36,7 @@ export const AddFlowDialog = forwardRef<{ show: () => void }, AddFlowDialog>(
 
     const handleSave = useCallback(() => {
       onSave(inputRef.current!.value);
-    }, []);
+    }, [onSave]);
 
     return (
       <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -72,5 +72,5 @@ export const AddFlowDialog = forwardRef<{ show: () => void }, AddFlowDialog>(
         </Dialog.Content>
       </Dialog.Root>
     );
-  }
+  },
 );

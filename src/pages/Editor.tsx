@@ -36,7 +36,7 @@ export const Editor: FC = () => {
         window.monitor.close();
       }
     },
-    [region]
+    [region],
   );
 
   const updateMonitor = useUpdateMonitor();
@@ -51,22 +51,28 @@ export const Editor: FC = () => {
 
   const alertDialogRef = useRef<{ alert: () => Promise<boolean> } | null>(null);
 
-  const handleNavigateTo = useCallback(async (path: string) => {
-    const state = sessionStorage.getItem("editing-state");
-    if (state === "true") {
-      const result = await alertDialogRef.current?.alert();
-      if (!result) return;
-    }
+  const handleNavigateTo = useCallback(
+    async (path: string) => {
+      const state = sessionStorage.getItem("editing-state");
+      if (state === "true") {
+        const result = await alertDialogRef.current?.alert();
+        if (!result) return;
+      }
 
-    sessionStorage.setItem("editing-state", "false");
-    navigate(path);
-  }, []);
+      sessionStorage.setItem("editing-state", "false");
+      navigate(path);
+    },
+    [navigate],
+  );
 
   // TODO asking whether close window when the flow data hasn't saved.
-  const handleAddFlow = useCallback((name: string) => {
-    const flow = addFlow(name);
-    handleNavigateTo("/editor/flow/" + flow.id);
-  }, []);
+  const handleAddFlow = useCallback(
+    (name: string) => {
+      const flow = addFlow(name);
+      handleNavigateTo("/editor/flow/" + flow.id);
+    },
+    [addFlow, handleNavigateTo],
+  );
 
   return (
     <ReactFlowProvider>

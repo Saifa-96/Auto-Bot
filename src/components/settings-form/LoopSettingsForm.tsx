@@ -31,7 +31,7 @@ export const LoopSettingsForm: FC<Node<LoopSettings>> = (node) => {
       });
       update(newNode);
     },
-    [node, update]
+    [node, produce, update],
   );
 
   const handleUpdateConditional = useCallback(
@@ -45,7 +45,7 @@ export const LoopSettingsForm: FC<Node<LoopSettings>> = (node) => {
 
       update(newNode);
     },
-    [node, update]
+    [node, produce, update],
   );
 
   const { removeEdgeBySourceHandle } = useEdgesManage();
@@ -58,7 +58,7 @@ export const LoopSettingsForm: FC<Node<LoopSettings>> = (node) => {
       removeEdgeBySourceHandle(sourceHandleId);
       update(newNode);
     },
-    [node, update]
+    [node, produce, removeEdgeBySourceHandle, update],
   );
 
   return (

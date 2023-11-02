@@ -39,7 +39,7 @@ export const ImageShowcase: FC<ImageShowcaseProps> = (props) => {
         onIndexChange?.(i);
       }
     },
-    [multiple, indices, disabledIndices]
+    [selectable, multiple, indices, onIndicesChange, onIndexChange],
   );
 
   return (

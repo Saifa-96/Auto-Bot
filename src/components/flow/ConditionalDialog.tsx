@@ -26,7 +26,7 @@ export const ConditionalDialog: FC<
 
   const handleSave = useCallback(() => {
     onSave({ ...data, targets: value, name: nameValue });
-  }, [value, nameValue]);
+  }, [onSave, data, value, nameValue]);
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>

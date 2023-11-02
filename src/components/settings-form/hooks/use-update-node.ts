@@ -14,11 +14,11 @@ export const useUpdateNode = <T>() => {
           return produce(nd, (draft) => {
             draft.data = node.data;
           });
-        })
+        }),
       );
       updateNodeInternals(node.id);
     },
-    [instance]
+    [instance, updateNodeInternals],
   );
   return { update, produce };
 };
