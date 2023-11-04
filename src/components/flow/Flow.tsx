@@ -27,6 +27,7 @@ import { ToastContainer } from "react-toastify";
 
 import { mergeProps } from "@react-aria/utils";
 import { nodeTypes } from "./nodes";
+// import { useFlow } from "../../store";
 import { useFlow } from "../../store";
 import { NODE_TYPE, createNodeByType } from "../../core";
 import { TopPanel } from "./TopPanel";
@@ -36,6 +37,7 @@ import "reactflow/dist/style.css";
 export const Flow: FC = () => {
   const { flowId } = useParams();
   const { flow } = useFlow(flowId!);
+
   const { reactFlowWrapper, reactflowProps, setFlow } = useFlowOperation();
   const collectFlowEditingState = useFlowEditingState();
 
@@ -68,7 +70,7 @@ export const Flow: FC = () => {
           position="bottom-right"
         />
         <Controls />
-        <TopPanel />
+        <TopPanel flowId={flowId!} />
       </ReactFlow>
     </div>
   );

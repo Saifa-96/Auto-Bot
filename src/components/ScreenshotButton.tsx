@@ -1,5 +1,6 @@
 import { FC, useCallback } from "react";
-import { useAddImage } from "../store";
+// import { useAddImage } from "../store";
+import { useImages } from "../store";
 import { Button } from "@radix-ui/themes";
 import { ImageData } from "../core";
 
@@ -8,7 +9,8 @@ interface ScreenshotButtonProps {
 }
 
 function useScreenshot() {
-  const addImage = useAddImage();
+  // const addImage = useAddImage();
+  const { addImage } = useImages();
   const takeScreenshot = useCallback(async () => {
     const imageURL = await window.screenshot.takeScreenshot();
     const imageData = addImage(imageURL);

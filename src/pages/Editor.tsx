@@ -4,12 +4,7 @@ import { styled } from "styled-components";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { HorizonBox, HorizonBoxItem } from "../layouts";
-import {
-  useAddFlow,
-  useFlowList,
-  useMonitRegion,
-  useUpdateMonitor,
-} from "../store";
+import { useFlowList, useMonitor } from "../store";
 import {
   Button,
   ScrollArea,
@@ -23,31 +18,31 @@ import { AddFlowDialog, SaveAlertDialog } from "../components";
 export const Editor: FC = () => {
   const { flowId } = useParams();
   const navigate = useNavigate();
-  const flowList = useFlowList();
-  const { addFlow } = useAddFlow();
+  const { flows, addFlow } = useFlowList();
 
-  const region = useMonitRegion();
+  // const region = useMonitRegion();
+  const { area, setArea } = useMonitor();
 
   const onValueChange = useCallback(
     (isShowMonitor: boolean) => {
       if (isShowMonitor) {
-        window.monitor.open(region);
+        window.monitor.open(area);
       } else {
         window.monitor.close();
       }
     },
-    [region],
+    [area],
   );
 
-  const updateMonitor = useUpdateMonitor();
+  // const updateMonitor = useUpdateMonitor();
   useEffect(() => {
     const off = window.monitor.onChangedGeometry((region) => {
-      updateMonitor(region);
+      setArea(region);
     });
     return () => {
       off();
     };
-  }, [updateMonitor]);
+  }, [setArea]);
 
   const alertDialogRef = useRef<{ alert: () => Promise<boolean> } | null>(null);
 
@@ -88,7 +83,7 @@ export const Editor: FC = () => {
           <div style={{ flex: 1 }}>
             <ScrollArea scrollbars="vertical">
               <Sidebar>
-                {flowList.map((flow) => (
+                {flows.map((flow) => (
                   <Button
                     color={flowId === flow.id ? "orange" : undefined}
                     key={flow.id}

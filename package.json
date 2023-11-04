@@ -17,6 +17,7 @@
     "@radix-ui/themes": "^2.0.0",
     "@react-aria/utils": "^3.21.1",
     "immer": "^10.0.3",
+    "jotai": "^2.5.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "match-sorter": "^6.3.1",
@@ -27,8 +28,7 @@
     "reactflow": "^11.9.2",
     "sort-by": "^1.2.0",
     "styled-components": "^6.1.0",
-    "uuid": "^9.0.1",
-    "zustand": "^4.4.3"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.199",

@@ -1,13 +1,6 @@
 import { ipcRenderer, type IpcRendererEvent, type Rectangle } from "electron";
 import * as EVENT_NAME from "./event-names";
 
-interface Region {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
 export const ipcRendererContext = {
   geometry: {
     resize: (w: number, h: number) => {
@@ -50,8 +43,8 @@ export const ipcRendererContext = {
     isShow() {
       return ipcRenderer.invoke(EVENT_NAME.CHECK_MONITOR_SHOW);
     },
-    open(region: Region) {
-      ipcRenderer.send(EVENT_NAME.TOGGLE_MONITOR_VISIBLE, region);
+    open(area: Rectangle) {
+      ipcRenderer.send(EVENT_NAME.TOGGLE_MONITOR_VISIBLE, area);
     },
     close() {
       ipcRenderer.send(EVENT_NAME.TOGGLE_MONITOR_VISIBLE);
@@ -60,18 +53,18 @@ export const ipcRendererContext = {
       ipcRenderer.send(EVENT_NAME.MATCH_TEMPLATE, imageURL);
     },
     drawMatchedRegion(
-      callback: (areas: [number, number, number, number][]) => void
+      callback: (areas: [number, number, number, number][]) => void,
     ) {
       const listener = (
         _event: IpcRendererEvent,
-        areas: [number, number, number, number][]
+        areas: [number, number, number, number][],
       ) => callback(areas);
 
       ipcRenderer.on(EVENT_NAME.DRAW_MATCHED_REGION, listener);
       return () => ipcRenderer.off(EVENT_NAME.DRAW_MATCHED_REGION, listener);
     },
-    onChangedGeometry(callback: (geometry: Region) => void) {
-      const listener = (_event: IpcRendererEvent, geometry: Region) =>
+    onChangedGeometry(callback: (geometry: Rectangle) => void) {
+      const listener = (_event: IpcRendererEvent, geometry: Rectangle) =>
         callback(geometry);
 
       ipcRenderer.on(EVENT_NAME.CHANGED_MONITOR_WINDOW_GEOMETRY, listener);
@@ -88,7 +81,7 @@ export const ipcRendererContext = {
     async save(contents: string) {
       const result = await ipcRenderer.invoke(
         EVENT_NAME.SAVE_CONFIG_FILE,
-        contents
+        contents,
       );
       return result;
     },
