@@ -1,5 +1,4 @@
 import { FC, useCallback, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 import {
   Flex,
   Button,
@@ -11,33 +10,38 @@ import {
 import { toast } from "react-toastify";
 import { Cross2Icon, CheckIcon } from "@radix-ui/react-icons";
 import { Panel, ReactFlowJsonObject, useReactFlow } from "reactflow";
-import { useFlow } from "../../store";
+import { useFlow, useImages, useMonitor } from "../../store";
 
-export const TopPanel: FC = () => {
+interface TopPanelProps {
+  flowId: string;
+}
+
+export const TopPanel: FC<TopPanelProps> = ({ flowId }) => {
   const instance = useReactFlow();
-  const { flowId } = useParams();
-  const { flow, updateFlow } = useFlow(flowId!);
+  const { flow, updateFlow } = useFlow(flowId);
+  const { images } = useImages();
+  const { area } = useMonitor();
 
   const onSave = useCallback(
-    (flowName?: string) => {
+    async (flowName?: string) => {
       const jsonObj = instance.toObject();
       const flowData = simplifyFlowData(jsonObj);
 
-      updateFlow(
-        {
-          id: flow.id,
-          name: flowName ?? flow.name,
-          ...flowData,
-        },
-        async (state) => {
-          console.log("save data: ", state);
-          await window.configFile.save(JSON.stringify(state));
-          sessionStorage.setItem("editing-state", "false");
-          toast.success("Successfully saved", { autoClose: 1000 });
-        },
+      const flows = updateFlow({
+        id: flow.id,
+        name: flowName ?? flow.name,
+        ...flowData,
+      });
+
+      console.log("save data: ", flows);
+      await window.configFile.save(
+        JSON.stringify({ flows, monitor: area, images }),
       );
+
+      sessionStorage.setItem("editing-state", "false");
+      toast.success("Successfully saved", { autoClose: 1000 });
     },
-    [flow.id, flow.name, instance, updateFlow],
+    [area, flow.id, flow.name, images, instance, updateFlow],
   );
 
   const [executing, setExecuteState] = useState<boolean>(false);
@@ -132,12 +136,19 @@ const FlowNameInput: FC<FlowNameInputProps> = ({ defaultValue, onChange }) => {
 };
 
 const simplifyFlowData = (obj: ReactFlowJsonObject) => {
-  const { nodes } = obj;
+  const { nodes, edges } = obj;
   const simplifiedNodes = nodes.map((node) => ({
     id: node.id,
     type: node.type,
     data: node.data,
     position: node.position,
   }));
-  return { ...obj, nodes: simplifiedNodes };
+  const simplifiedEdges = edges.map((edge) => ({
+    id: edge.id,
+    source: edge.source,
+    sourceHandle: edge.sourceHandle,
+    target: edge.target,
+    targetHandle: edge.targetHandle,
+  }));
+  return { ...obj, nodes: simplifiedNodes, edges: simplifiedEdges };
 };

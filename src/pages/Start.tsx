@@ -9,17 +9,23 @@ export const Start: FC = () => {
   const { set, init } = useVersion();
 
   const newProject = useCallback(() => {
-    const flowId = init();
+    const flow = init();
     window.geometry.resize(1100, 700);
-    setTimeout(() => navigate(`/editor/flow/${flowId}`), 0);
+    setTimeout(() => navigate(`/editor/flow/${flow.id}`), 0);
   }, [init, navigate]);
 
   const openProject = useCallback(async () => {
     const result = await window.configFile.load();
-    const flowId = JSON.parse(result).flows[0].id;
-    set(JSON.parse(result));
-    window.geometry.resize(1100, 700);
-    setTimeout(() => navigate(`/editor/flow/${flowId}`), 0);
+    try {
+      const data = JSON.parse(result);
+      const flowId = data.flows[0].id;
+
+      set(JSON.parse(result));
+      window.geometry.resize(1100, 700);
+      setTimeout(() => navigate(`/editor/flow/${flowId}`), 0);
+    } catch (error) {
+      console.error(error);
+    }
   }, [navigate, set]);
 
   return (

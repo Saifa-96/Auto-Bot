@@ -1,11 +1,11 @@
-import { BrowserWindow } from "electron";
+import { BrowserWindow, Rectangle } from "electron";
 import path from "node:path";
 
 export class MonitorWin {
   win: BrowserWindow;
 
-  constructor(area: { x: number; y: number; w: number; h: number }) {
-    const { x, y, w, h } = area;
+  constructor(area: Rectangle) {
+    const { x, y, width, height } = area;
     this.win = new BrowserWindow({
       title: "Monitor",
       backgroundColor: "#00000000",
@@ -17,8 +17,8 @@ export class MonitorWin {
       frame: false,
       x,
       y,
-      width: w,
-      height: h,
+      width,
+      height,
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
         // TODO temporarily resolve 'Not allowed to load local resource: xxx' problem
@@ -27,11 +27,11 @@ export class MonitorWin {
     });
   }
 
-  getGeometry() {
+  getGeometry(): Rectangle {
     const win = this.win
     const [x, y] = win.getPosition();
     const [w, h] = win.getSize();
-    return { x, y, w, h };
+    return { x, y, width: w, height: h };
   }
 
   ignoreMouse(bool: boolean) {
@@ -45,7 +45,7 @@ export class MonitorWin {
   }
 
   onChangedGeometry(
-    callback: (geometry: { x: number; y: number; w: number; h: number }) => void
+    callback: (geometry: Rectangle) => void
   ) {
     const fn = () => {
       const area = this.getGeometry();

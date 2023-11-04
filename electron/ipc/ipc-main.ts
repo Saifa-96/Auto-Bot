@@ -2,23 +2,16 @@ import { Rectangle, ipcMain, nativeImage } from "electron";
 import { winMgr, fileMgr, botMgr, sctMgr, permissionsMgr } from "../managers";
 import * as EVENT_NAME from "./event-names";
 
-interface Region {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
 export function initIpcMain() {
   // Toggle monitor window visible state
-  ipcMain.on(EVENT_NAME.TOGGLE_MONITOR_VISIBLE, (_event, region?: Region) => {
-    if (region) {
-      const monitorWin = winMgr.createMonitorWin(region);
+  ipcMain.on(EVENT_NAME.TOGGLE_MONITOR_VISIBLE, (_event, area: Rectangle) => {
+    if (area) {
+      const monitorWin = winMgr.createMonitorWin(area);
       // Notice main window that the monitor window's geometry was changed
       monitorWin.onChangedGeometry((geometry) => {
         winMgr.mainWin?.win.webContents.send(
           EVENT_NAME.CHANGED_MONITOR_WINDOW_GEOMETRY,
-          geometry
+          geometry,
         );
       });
     } else {
@@ -50,7 +43,7 @@ export function initIpcMain() {
         const areas = JSON.parse(data.toString());
         winMgr?.monitorWin?.win.webContents.send(
           EVENT_NAME.DRAW_MATCHED_REGION,
-          areas
+          areas,
         );
       },
       close: removeFile,
@@ -87,7 +80,7 @@ export function initIpcMain() {
           },
         });
       });
-    }
+    },
   );
 
   // Save & Load The Config File
@@ -95,7 +88,7 @@ export function initIpcMain() {
     return fileMgr.saveConfigFile(contents);
   });
 
-  ipcMain.handle(EVENT_NAME.LOAD_CONFIG_FILE, async (_event) => {
+  ipcMain.handle(EVENT_NAME.LOAD_CONFIG_FILE, async () => {
     return fileMgr.loadConfigFile();
   });
 
@@ -125,7 +118,7 @@ export function initIpcMain() {
       // return cropped image
       winMgr.mainWin?.win.webContents.send(
         EVENT_NAME.CROPPED_SCREENSHOT,
-        croppedImageURL
+        croppedImageURL,
       );
       winMgr.destroyScreenshotWin();
     });
@@ -138,7 +131,7 @@ export function initIpcMain() {
       const mainWin = winMgr.mainWin?.win;
       mainWin?.setSize(width, height);
       mainWin?.center();
-    }
+    },
   );
 
   // open dev tools

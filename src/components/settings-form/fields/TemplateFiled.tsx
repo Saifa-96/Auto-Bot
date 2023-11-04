@@ -1,10 +1,17 @@
-import { FC, ReactEventHandler, useCallback, useRef, useState } from "react";
+import {
+  FC,
+  ReactEventHandler,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { styled } from "styled-components";
 import { Button, Card, Flex, Text, Slider, Box } from "@radix-ui/themes";
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
 import { ImageData, TemplateItem } from "../../../core";
-import { useImageURL } from "../../../store";
+import { useImages } from "../../../store";
 import { ImageShowcase } from "../../ImageShowcase";
 import { ScreenshotButton } from "../../ScreenshotButton";
 
@@ -82,7 +89,18 @@ export const TemplatesInput: FC<TemplatesInputProps> = (props) => {
     [onChange, value],
   );
 
-  const { imageURL: sources } = useImageURL(value.map((v) => v.imageId));
+  // const { imageURL: sources } = useImageURL(value.map((v) => v.imageId));
+  const { images } = useImages();
+  const sources = useMemo(() => {
+    return value.map(({ imageId }) => {
+      const img = images.find((i) => i.id === imageId);
+      if (!img) {
+        console.warn("Don't find the image URL");
+        return "";
+      }
+      return img.detail;
+    });
+  }, [images, value]);
 
   return (
     <Flex direction="column">
@@ -124,7 +142,9 @@ const ImageCard: FC<ImageCardProps> = (props) => {
     onDelete,
   } = props;
 
-  const { imageURL } = useImageURL(imageId);
+  // const { imageURL } = useImageURL(imageId);
+  const { images } = useImages();
+  const imageURL = images.find((i) => i.id === imageId)?.detail ?? "";
   const imgRef = useRef<HTMLImageElement>(null);
   const [imgSizeStr, setImgSizeStr] = useState<string>("loading...");
 

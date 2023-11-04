@@ -1,4 +1,4 @@
-import { BrowserWindow } from "electron";
+import { BrowserWindow, Rectangle } from "electron";
 import { MainWin, ScreenshotWin, MonitorWin } from "../wins";
 import { VITE_DEV_SERVER_URL, publicSource } from "../source-path";
 
@@ -36,7 +36,7 @@ class WindowManager {
     });
   }
 
-  createMonitorWin(area: { x: number; y: number; w: number; h: number }) {
+  createMonitorWin(area: Rectangle) {
     this.monitorWin = new MonitorWin(area);
     loadWin(this.monitorWin.win, "monitor");
     return this.monitorWin;
