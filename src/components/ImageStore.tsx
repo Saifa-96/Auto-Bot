@@ -1,22 +1,50 @@
 import { Flex, Box, Button } from "@radix-ui/themes";
-import { useImages } from "../store";
+import { useFlowList, useImages } from "../store";
 import { ImageShowcase } from "./ImageShowcase";
 import { ScreenshotButton } from ".";
 import { useMemo, useState } from "react";
+import { has } from "lodash";
+import { NODE_TYPE, getImages } from "../core";
 
 export const ImageStore = () => {
-  const { images, removeImages } = useImages();
+  const { flows } = useFlowList();
+  const { images, removeImagesByIndices } = useImages();
   const [indices, setIndices] = useState<number[]>([]);
   const [multiple, setIsMultiple] = useState<boolean>(false);
 
+  const imageItems = useMemo(() => {
+    const imageMap: { [key: string]: string[] } = {};
+    const collect = (nodeId: string, imageIds: string[]) => {
+      imageIds.forEach((imageId) => {
+        if (!has(imageMap, imageId)) {
+          imageMap[imageId] = [nodeId];
+          return;
+        }
+        if (!imageMap[imageId].includes(nodeId)) {
+          imageMap[imageId].push(nodeId);
+        }
+      });
+    };
+
+    flows.forEach((flow) => {
+      flow.nodes.forEach((node) => {
+        const type = node.type! as NODE_TYPE;
+        const imageIds = getImages[type](node.data);
+        collect(node.id, imageIds);
+      });
+    });
+
+    return images.map((i) => ({ ...i, belong: imageMap[i.id] ?? [] }));
+  }, [flows, images]);
+
   const disabledIndices = useMemo(() => {
-    return images.reduce<number[]>((arr, img, index) => {
+    return imageItems.reduce<number[]>((arr, img, index) => {
       if (img.belong.length > 0) {
         arr.push(index);
       }
       return arr;
     }, []);
-  }, [images]);
+  }, [imageItems]);
 
   const handleCancel = () => {
     setIndices([]);
@@ -24,7 +52,7 @@ export const ImageStore = () => {
   };
 
   const handleDelete = () => {
-    removeImages(indices);
+    removeImagesByIndices(indices);
     handleCancel();
   };
 
@@ -54,7 +82,7 @@ export const ImageStore = () => {
         <Box grow="1">
           <ImageShowcase
             multiple={multiple}
-            sources={images.map((v) => v.detail)}
+            sources={imageItems.map((v) => v.detail)}
             indices={indices}
             disabledIndices={disabledIndices}
             onIndicesChange={setIndices}
