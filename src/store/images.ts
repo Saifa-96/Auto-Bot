@@ -1,5 +1,6 @@
 import { atom, useAtom } from "jotai";
 import { v4 as uuid } from "uuid";
+import { produce } from "immer";
 import { ImageData } from "../core";
 
 const imagesAtom = atom<ImageData[]>([]);
@@ -20,6 +21,14 @@ export const useImages = () => {
     });
   };
 
+  const removeImagesByIndices = (indices: number[]) => {
+    setImages((images) => {
+      return produce(images, (draft) => {
+        indices.forEach((i) => draft.splice(i, 1));
+      });
+    });
+  };
+
   const getImageURL = (imageId: string): string => {
     const img = images.find((i) => i.id === imageId);
     if (!img) {
@@ -29,5 +38,5 @@ export const useImages = () => {
     return img.detail;
   };
 
-  return { images, addImage, removeImage, getImageURL };
+  return { images, addImage, removeImage, getImageURL, removeImagesByIndices };
 };
