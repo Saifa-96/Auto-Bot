@@ -10,10 +10,10 @@ The aim is to allow users to use a workflow editor to design their own auto-GUI 
 
 ## Feature
 1. It can detect the area of given template image on the monitor window.
-![detect](doc-assests/detect.gif)
+![detect](screenshot/detect.gif)
 
 2. After you have organized your workflow, It can follow the configuration of workflow to control the mouse and keyboard to perform the tasks.
-![executing](doc-assests/execute.gif)
+![executing](screenshot/execute.gif)
 
 ## Nodes
 1. **Match Click Node**: Matches target templates for the mouse click operation.

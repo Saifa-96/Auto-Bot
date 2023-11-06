@@ -1,4 +1,0 @@
-{
-  "src/**/*.{ts,tsx}": ["eslint --ext .tsx --ext .ts ./src"],
-  "src/**": ["prettier --check"]
-}
