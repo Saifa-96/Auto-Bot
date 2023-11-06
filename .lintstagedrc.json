@@ -1,0 +1,6 @@
+{
+  "apps/**/*.{ts,tsx}": [],
+  "apps/**": [],
+  "packages/**/*.{ts,tsx}": [],
+  "packages/**": []
+}

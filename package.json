@@ -8,7 +8,6 @@
     "prepare": "husky install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "pnpm --filter auto-gui-bot run dev",
-    "lint-staged": "pnpm --filter auto-gui-bot lint-staged",
     "build-bot": "pyinstaller ./bot/main.py --name bot --noconfirm --distpath ./apps/desktop/extra --workpath ./bot/build --specpath ./bot",
     "build": "pnpm run build-bot && pnpm turbo build"
   },
