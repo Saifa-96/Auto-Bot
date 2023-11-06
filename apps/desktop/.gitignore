@@ -26,5 +26,3 @@ release
 *.sw?
 
 extra/*
-.turbo
-
