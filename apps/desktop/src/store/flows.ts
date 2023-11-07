@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { atom, useAtom } from "jotai";
-import { FlowData, createFlow } from "../core";
+import { FlowData, createFlow } from "@/core";
 
 const flowsAtom = atom<FlowData[]>([]);
 export default flowsAtom;

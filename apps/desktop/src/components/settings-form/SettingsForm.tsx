@@ -1,13 +1,12 @@
 import { FC, useMemo } from "react";
-import { useNodes } from "reactflow";
-import { FlowSettingsForm } from "./FlowSettingsForm";
-import { NODE_TYPE } from "../../core";
+import { useNodes, type Node } from "reactflow";
 
+import { NODE_TYPE } from "@/core";
+import { FlowSettingsForm } from "./FlowSettingsForm";
 import { RegionClickSettingsForm } from "./RegionClickSettingsForm";
 import { StartSettingsForm } from "./StartSettingsForm";
 import { LoopSettingsForm } from "./LoopSettingsForm";
 import { MatchClickSettingsForm } from "./MatchClickSettings";
-import { Node } from "reactflow";
 
 type FormMap = {
   [key: string]: FC<Node>;

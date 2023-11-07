@@ -2,7 +2,7 @@ import { FC, useCallback } from "react";
 import { Text } from "@radix-ui/themes";
 import { Node } from "reactflow";
 
-import { RegionClickSettings } from "../../core";
+import { RegionClickSettings } from "@/core";
 import { TemplateInput } from "./fields/TemplateFiled";
 import { useUpdateNode } from "./hooks";
 

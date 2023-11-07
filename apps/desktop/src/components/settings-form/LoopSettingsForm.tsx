@@ -3,8 +3,13 @@ import { Node } from "reactflow";
 import { Text, Card, Flex, Button, Box, IconButton } from "@radix-ui/themes";
 import { Cross1Icon, GearIcon } from "@radix-ui/react-icons";
 import { v4 as uuid } from "uuid";
-import { LoopSettings } from "../../core/nodes/loop";
-import { CONDITIONAL_TYPE, Conditional, isOrConditional } from "../../core";
+
+import {
+  CONDITIONAL_TYPE,
+  Conditional,
+  isOrConditional,
+  LoopSettings,
+} from "@/core";
 import { useUpdateNode, useEdgesManage } from "./hooks";
 import { ConditionalDialog } from "../flow/ConditionalDialog";
 

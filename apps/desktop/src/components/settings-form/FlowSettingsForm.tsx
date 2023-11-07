@@ -5,7 +5,8 @@ import {
   Crosshair1Icon,
   UpdateIcon,
 } from "@radix-ui/react-icons";
-import { NODE_TYPE } from "../../core";
+
+import { NODE_TYPE } from "@/core";
 
 interface NodeItem {
   type: NODE_TYPE;

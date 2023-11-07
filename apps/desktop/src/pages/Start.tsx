@@ -2,7 +2,7 @@ import { FC, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex } from "@radix-ui/themes";
 import { FilePlusIcon, FileTextIcon } from "@radix-ui/react-icons";
-import { useVersion } from "../store";
+import { useVersion } from "@/store";
 
 export const Start: FC = () => {
   const navigate = useNavigate();

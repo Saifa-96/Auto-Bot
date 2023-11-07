@@ -1,10 +1,11 @@
-import { Flex, Box, Button } from "@radix-ui/themes";
-import { useFlowList, useImages } from "../store";
-import { ImageShowcase } from "./ImageShowcase";
-import { ScreenshotButton } from ".";
 import { useMemo, useState } from "react";
+import { Flex, Box, Button } from "@radix-ui/themes";
 import { has } from "lodash";
-import { NODE_TYPE, getImages } from "../core";
+
+import { useFlowList, useImages } from "@/store";
+import { NODE_TYPE, getImages } from "@/core";
+import { ImageShowcase } from "./ImageShowcase";
+import { ScreenshotButton } from "./ScreenshotButton";
 
 export const ImageStore = () => {
   const { flows } = useFlowList();

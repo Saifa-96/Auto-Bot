@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { Button, Dialog, Flex, Text, TextField } from "@radix-ui/themes";
-import { Conditional, TemplateItem } from "../../core";
+import { Conditional, TemplateItem } from "@/core";
+
 import { TemplatesInput } from "../settings-form/fields";
 
 interface ConditionalDialogProps {
