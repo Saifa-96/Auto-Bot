@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint src --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": ""
   },
@@ -25,7 +25,8 @@
     "reactflow": "^11.9.2",
     "sort-by": "^1.2.0",
     "styled-components": "^6.1.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "ui": "workspace:*"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.199",
