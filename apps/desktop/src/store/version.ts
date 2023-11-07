@@ -3,7 +3,7 @@ import { useSetAtom } from "jotai";
 import imagesAtom from "./images";
 import monitorAreaAtom from "./monitor";
 import flowsAtom from "./flows";
-import { FlowData, ImageData, createFlow } from "../core";
+import { FlowData, ImageData, createFlow } from "@/core";
 import { Rectangle } from "electron";
 
 interface VersionData {

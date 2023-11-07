@@ -10,7 +10,8 @@ import {
 import { toast } from "react-toastify";
 import { Cross2Icon, CheckIcon } from "@radix-ui/react-icons";
 import { Panel, ReactFlowJsonObject, useReactFlow } from "reactflow";
-import { useFlow, useImages, useMonitor } from "../../store";
+
+import { useFlow, useImages, useMonitor } from "@/store";
 
 interface TopPanelProps {
   flowId: string;

@@ -1,7 +1,7 @@
 import { atom, useAtom } from "jotai";
 import { v4 as uuid } from "uuid";
 import { produce } from "immer";
-import { ImageData } from "../core";
+import { ImageData } from "@/core";
 
 const imagesAtom = atom<ImageData[]>([]);
 export default imagesAtom;

@@ -24,12 +24,11 @@ import ReactFlow, {
   ReactFlowProps,
 } from "reactflow";
 import { ToastContainer } from "react-toastify";
-
 import { mergeProps } from "@react-aria/utils";
+
+import { useFlow } from "@/store";
+import { NODE_TYPE, createNodeByType } from "@/core";
 import { nodeTypes } from "./nodes";
-// import { useFlow } from "../../store";
-import { useFlow } from "../../store";
-import { NODE_TYPE, createNodeByType } from "../../core";
 import { TopPanel } from "./TopPanel";
 
 import "reactflow/dist/style.css";

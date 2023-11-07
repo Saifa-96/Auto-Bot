@@ -10,8 +10,9 @@ import { styled } from "styled-components";
 import { Button, Card, Flex, Text, Slider, Box } from "@radix-ui/themes";
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
-import { ImageData, TemplateItem } from "../../../core";
-import { useImages } from "../../../store";
+
+import { ImageData, TemplateItem } from "@/core";
+import { useImages } from "@/store";
 import { ImageShowcase } from "../../ImageShowcase";
 import { ScreenshotButton } from "../../ScreenshotButton";
 

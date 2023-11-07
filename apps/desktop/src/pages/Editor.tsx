@@ -3,8 +3,8 @@ import { ReactFlowProvider } from "reactflow";
 import { styled } from "styled-components";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { HorizonBox, HorizonBoxItem } from "../layouts";
-import { useFlowList, useMonitor } from "../store";
+import { HorizonBox, HorizonBoxItem } from "@/layouts";
+import { useFlowList, useMonitor } from "@/store";
 import {
   Button,
   ScrollArea,
@@ -13,7 +13,7 @@ import {
   Checkbox,
   Flex,
 } from "@radix-ui/themes";
-import { AddFlowDialog, SaveAlertDialog } from "../components";
+import { AddFlowDialog, SaveAlertDialog } from "@/components";
 
 export const Editor: FC = () => {
   const { flowId } = useParams();

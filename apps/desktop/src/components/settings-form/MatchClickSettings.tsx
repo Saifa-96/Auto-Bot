@@ -1,10 +1,10 @@
 import { FC, useCallback } from "react";
 import { Node } from "reactflow";
 import { Text } from "@radix-ui/themes";
+
+import { TemplateItem, MatchClickSettings } from "@/core";
 import { TemplatesInput } from "./fields";
-import { MatchClickSettings } from "../../core/nodes/match-click";
 import { useUpdateNode } from "./hooks";
-import { TemplateItem } from "../../core";
 
 export const MatchClickSettingsForm: FC<Node<MatchClickSettings>> = (node) => {
   const {
