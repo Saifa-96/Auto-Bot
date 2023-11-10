@@ -1,19 +1,43 @@
-import { styled } from "styled-components";
+import { styled, css } from "styled-components";
+import { borderWithShadow } from "@lib/styles";
+import { Sizes } from "@lib/types";
 
-export const Button = styled.button`
-  width: 120px;
+const sm = css`
+  height: 30px;
+  font-size: 13px;
+  font-weight: 600;
+`;
+
+const md = css`
   height: 40px;
-  border-radius: 5px;
-  border: 2px solid var(--main-color);
-  background-color: var(--bg-color);
-  box-shadow: 4px 4px var(--main-color);
   font-size: 17px;
   font-weight: 600;
+`;
+
+export const Button = styled.button<{ size?: Sizes }>`
+  ${(props) => {
+    switch (props.size) {
+      case "sm":
+        return sm;
+      default:
+        return md;
+    }
+  }}
+
+  ${borderWithShadow}
+
+  background-color: var(--bg-color);
   color: var(--font-color);
   cursor: pointer;
 
-  &:active {
+  &:enabled:active {
     box-shadow: 0px 0px var(--main-color);
     transform: translate(3px, 3px);
+  }
+
+  &:disabled {
+    background-color: var(--bg-disabled-color);
+    color: var(--font-color-sub);
+    cursor: not-allowed;
   }
 `;
