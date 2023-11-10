@@ -9,5 +9,6 @@ export const GlobalStyles = createGlobalStyle`
     --focus-color: #2d8cf0;
 
     --bg-color: #fff;
+    --bg-disabled-color: #ccc;
   }
 `;
