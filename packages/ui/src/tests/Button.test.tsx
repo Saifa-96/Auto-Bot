@@ -18,4 +18,5 @@ test("Check Button", () => {
   const btnElement = screen.getByText("Button");
 
   expect(btnElement).toBeInTheDocument();
+  expect(btnElement).toHaveStyleRule('border', '2px solid var(--main-color)')
 });
