@@ -30,6 +30,5 @@ export const Basic: Story = {
   args: {
     children: "Button",
     size: "sm",
-    disabled: true,
   },
 };
