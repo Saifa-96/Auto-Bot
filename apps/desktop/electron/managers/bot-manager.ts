@@ -86,14 +86,13 @@ class BotManager {
 
   private _execBot(args: string[]) {
     const executableFilePath = extraResources(
-      process.platform === "darwin" ? "bot/bot" : "bot/bot.exe"
+      process.platform === "darwin" ? "bot/bot" : "bot/bot.exe",
     );
 
     this._process = app.isPackaged
       ? cp.execFile(executableFilePath, args)
-      : cp.spawn("python", ["bot/main.py", ...args]);
+      : cp.spawn("python", ["../../bot/main.py", ...args]);
     debugLog("args -> " + args);
-    // this._process = cp.execFile(publicSource("../bot/dist/bot/bot.exe"), args);
     return this._process;
   }
 }
