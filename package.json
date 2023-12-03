@@ -7,9 +7,9 @@
   "scripts": {
     "prepare": "husky install",
     "test": "pnpm turbo test",
-    "dev": "pnpm --filter auto-gui-bot run dev",
+    "dev": "pnpm --filter auto-bot start",
     "build-bot": "pyinstaller ./bot/main.py --name bot --noconfirm --distpath ./apps/desktop/extra --workpath ./bot/build --specpath ./bot",
-    "build": "pnpm run build-bot && pnpm turbo build"
+    "build": "pnpm run build-bot && pnpm --filter auto-bot package"
   },
   "keywords": [],
   "devDependencies": {

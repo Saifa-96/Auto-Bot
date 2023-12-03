@@ -1,0 +1,18 @@
+{
+  "name": "auto-bot",
+  "version": "0.0.1",
+  "description": "This Electron application is designed for educational research purposes. The front end is written using React (TypeScript), and the back end is written in Python.",
+  "license": "MIT",
+  "author": {
+    "name": "Saifa-96",
+    "email": "450412958@qq.com",
+    "url": "https://github.com/Saifa-96"
+  },
+  "main": "./dist/main/main.js",
+  "scripts": {
+    "rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "postinstall": "npm run rebuild && npm run link-modules",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
+  },
+  "dependencies": {}
+}
